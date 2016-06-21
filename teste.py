@@ -13,15 +13,14 @@ if clientID == -1:
 print ('Connected to remote API server')
 
 
-def reset_simulation(clientID, lHipHandle, rHipHandle):
+def reset_simulation(clientID):
     vrep.simxStopSimulation(clientID, vrep.simx_opmode_oneshot)
-    vrep.simxSetJointTargetPosition(clientID,lHipHandle,0.2,vrep.simx_opmode_oneshot);
-    vrep.simxSetJointTargetPosition(clientID,rHipHandle,0.2,vrep.simx_opmode_oneshot);
     time.sleep(1) # um pequeno sleep entre o stop e o start
     vrep.simxStartSimulation(clientID, vrep.simx_opmode_oneshot)
 
 
 # obtem os handlers. Um Handler eh um numero que identifica um componente, como, por exemplo, uma junta
+res, nao = vrep.simxGetObjectHandle(clientID, "NAO", vrep.simx_opmode_blocking)
 res, shL = vrep.simxGetObjectHandle(clientID, "LShoulderPitch3", vrep.simx_opmode_blocking)
 res, shR = vrep.simxGetObjectHandle(clientID, "RShoulderPitch3", vrep.simx_opmode_blocking)
 res, kneeR = vrep.simxGetObjectHandle(clientID, "RKneePitch3", vrep.simx_opmode_blocking)
@@ -35,19 +34,21 @@ res, anklePitchR = vrep.simxGetObjectHandle(clientID, "RAnklePitch3", vrep.simx_
 
 
 
-# Envia comandos para as juntas
-vrep.simxSetJointTargetPosition(clientID, hipPitchR, -1.2,vrep.simx_opmode_oneshot)
-vrep.simxSetJointTargetPosition(clientID, kneeR, 1.2,vrep.simx_opmode_oneshot)
-vrep.simxSetJointTargetPosition(clientID, anklePitchR, 0.4,vrep.simx_opmode_oneshot)
+while True:
+	# Envia comandos para as juntas
+	vrep.simxSetJointTargetPosition(clientID, kneeR, 1.2,vrep.simx_opmode_oneshot)
+	vrep.simxSetJointTargetPosition(clientID, anklePitchR, 0.4,vrep.simx_opmode_oneshot)
 
-time.sleep(1)
-vrep.simxSetJointTargetPosition(clientID, hipYawPitchL, -0.3,vrep.simx_opmode_oneshot)
+	time.sleep(1)
+	vrep.simxSetJointTargetPosition(clientID, hipYawPitchL, -0.3,vrep.simx_opmode_oneshot)
 
-vrep.simxSetJointTargetPosition(clientID, hipPitchR, -0.1,vrep.simx_opmode_oneshot)
-vrep.simxSetJointTargetPosition(clientID, hipYawPitchR, -0.3,vrep.simx_opmode_oneshot)
-vrep.simxSetJointTargetPosition(clientID, kneeR, -0.1,vrep.simx_opmode_oneshot)
-vrep.simxSetJointTargetPosition(clientID, anklePitchR, 0,vrep.simx_opmode_oneshot)
+	vrep.simxSetJointTargetPosition(clientID, hipPitchR, -0.1,vrep.simx_opmode_oneshot)
+	vrep.simxSetJointTargetPosition(clientID, hipYawPitchR, -0.3,vrep.simx_opmode_oneshot)
+	vrep.simxSetJointTargetPosition(clientID, kneeR, -0.1,vrep.simx_opmode_oneshot)
+	vrep.simxSetJointTargetPosition(clientID, anklePitchR, 0,vrep.simx_opmode_oneshot)
 
+	print vrep.simxGetObjectPosition(clientID, nao, -1, vrep.simx_opmode_blocking)
+	reset_simulation(clientID)
 
 #time.sleep(3)
 #vrep.simxSetJointTargetPosition(clientID, hipPitchL, -0.5,vrep.simx_opmode_oneshot)
