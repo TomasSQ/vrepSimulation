@@ -49,12 +49,12 @@
 %%*****************************************************************************
 % Resumo do trabalho
 \begin{abstract}
-Este trabalho teve como objetivo mostrar diferentes abordagens de inteligência articial (IA) para fazer um robo (NAO) andar utilizando VREP. Fez-se uso de redes neurais (RN) com camadas escondidas, aprendendo de forma monitorada ou por reforço, e algortimo genético. Todas as técnicas mostraram ser eficazes, porém MELHOR\_EVER se mostrou melhor. 
+Este trabalho teve como objetivo mostrar diferentes abordagens de inteligência articial (IA) para fazer um robo bípede (NAO) andar utilizando o simulador VREP. Fez-se uso de redes neurais artificiais (RNA), aprendizado por reforço e algortimo genéticos. Estudaremos os prós e contras de cada técnica, além dos resultados obtidos. 
 \end{abstract}
 
 % Indique três palavras-chave que descrevem o trabalho
 \begin{IEEEkeywords}
- Robótica, NAO, VREP, aprendizado por reforço, aprendizado monitorado, algoritmo genético
+ Robótica, NAO, VREP, aprendizado por reforço, aprendizado supervisionado, algoritmo genético
 \end{IEEEkeywords}
 
 %%*****************************************************************************
@@ -62,10 +62,32 @@ Este trabalho teve como objetivo mostrar diferentes abordagens de inteligência 
 
 \section{Introdução}
 
-Em robótica
-\section{Trabalho Proposto}
+Uma das coisas mais excepcionais da natureza é a capacidade de andar com somente dois apoios. A dificuldade desse método é tão alta que pouquissímos animais conseguiram evoluir para atingir isso, sendo o ser-humano, obviamente, o exemplo mais acabado de tal habilidade. Apesar a dificuldade, há diversas vantagens nesse tipo de movimento, como, por exemplo: economia de energia, a capacidade de atingir distâncias maiores, além de, no caso dos humanos, amplicar a capacidade de visão. 
 
-O presente trabalho se propõe a implementar em Python
+Em robótica, há muito deseja-se conseguir que robôs bipedes andem de forma autônoma e eficiente. Porém o desafio é imenso e ainda não foi totalmente resolvido. Sendo assim, estudaremos este campo buscando fugir das abordagens tradicionais, baseadas em modelos precisos e métodos matemáticos, para explorar a métodos baseados em inteligência artificial (IA). 
+Neste trabalho, desenvolvemos diferentes modelos e implementações para o problema de locomoção bípede num robô NAO. O robô é um modelo humanóide da empresa francesa Aldebaran extremamente complexo, com 26 graus-de-liberdade (juntas) e diversos tipos de sensores.  Para testar, usaremos o simulador de robótica \textsl{VREP}, disponibilizado pela empresa %TODO%. 
+
+%% TODO colocar figura do Robô
+
+O resto do trabalho está dividido da seguinte maneira: na seção \ref{dificuldades} trataremos das dificuldades do problema de locomoção bípede, mostraremos as soluções e modelos normalmente adotados para resolvê-lo e também mostraremos brevemente o estado-da-arte para o robô NAO.
+Na seção \ref{aprendizagem_por_reforco}, mostraremos o modelo que montamos usando a técnica de aprendizagem por reforço, seus resultados e dificuldades. Na seção \ref{aprendizagem_supervisionada} trataremos do modelo que implementamos baseado em aprendizagem supervisionada e redes-neurais, mostraremos os resultados e evolução ao longo do tempo, além de também destacar os problemas e limitações dessa abordagem. Faremos o mesmo das seções anteriores para a seção \ref{algoritmo_geneticos}. Por fim, daremos um panôrama do problemae e dos modelos que usamos nesse trabalho, também discutiremos os resultados que obtemos e propôremos soluções para trabalhos futuros nesse tema na seção \ref{conclusoes}.
+
+
+
+ \section{Dificuldades do Problema} \label{dificuldades}
+
+%% Tratar das dificuldades da locomoçao, centro de massa, modelos matematicos, ZMP, etc
+%% Superficialmente
+
+ \section{Aprendizagem Por Reforço} \label{aprendizagem_por_reforco}
+ 
+
+ \section{Aprendizagem Supervisionada} \label{aprendizagem_por_reforco}
+ 
+  \section{Algoritmos Genéticos} \label{algoritmos_geneticos}
+  
+   \section{Conclusões} \label{conclusoes}
+ 
 \section{Métodos}
 
 Para ser alcançado os resultados desejados foram executados os seguintes passos:
