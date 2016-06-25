@@ -79,9 +79,15 @@ O resto do trabalho está dividido da seguinte maneira: na seção \ref{dificuld
 Na seção \ref{aprendizagem_por_reforco}, mostraremos o modelo que montamos usando a técnica de aprendizagem por reforço, seus resultados e dificuldades. Na seção \ref{aprendizagem_supervisionada} trataremos do modelo que implementamos baseado em aprendizagem supervisionada e redes-neurais artificiais, mostraremos os resultados e evolução ao longo do tempo, além de também destacar os problemas e limitações dessa abordagem. Faremos o mesmo das seções anteriores para a seção \ref{algoritmos_geneticos}. Por fim, daremos um panôrama do problema e dos modelos que usamos nesse trabalho, também discutiremos os resultados que obtemos e propôremos soluções para trabalhos futuros nesse tema na seção \ref{conclusoes}.
 
 \section{Dificuldades do Problema} \label{dificuldades}
+A habilidade de caminhar é algo tão automático para seres humanos quanto complexo. Sob um primeiro olhar, pode parecer simplesmente um movimento de pernas coordenados, porém, ao observar mais minunsiosamente, percebe-se que vai muito além disso, até porque, apenas para realizar tal movimento de pernas precisa-se fazer uso do quadril, joelho, tornozelo e pés, rotacionando-os cada um em uma maneira específica em mais de um eixo. Nota-se também que para caminhadas mais rápidas, é necessário também mexer a coluna, ombros, cotovelos, pulso, etc. e que para qualquer caminhada, utilizar de tais partes também é fundamental para manter o equilíbrio, mesmo que suavemente.
 
-%% Tratar das dificuldades da locomoçao, centro de massa, modelos matematicos, ZMP, etc
-%% Superficialmente
+O problema de andar então trata-se de realizar uma combinação em função do tempo de qual ângulo qual parte deve assumir para que seja possível sair do lugar. Enumerando rapidamente, observa-se que necessita-se saber, para cada intervalo de tempo, o ângulo do pé, tornozelo, joelho, quadril, coluna, ombros, cotovelo, pulsos, pescoço, ao longo do eixo x, y e z, totalizando em 48 incógnitas que se influenciam. É óbvio então que trata-se de um sistema complexo, sem soluções triviais, que por sua vez é estudado há vários anos.
+
+Uma das abordagens analíticas mais comuns de se resolver o sistema é considerando o centro de massa do ser bípede que se deseja fazer andar. Neste modelo, o centro de massa deve permanecer sempre próximo do seu estado original, variando apenas, claro, ao longo do eixo em que se deseja caminhar através. De maneira simplificada, essa forma de tratar o problema se assemelha ao problema de controlar um pêndulo invertido acoplado a um objeto móvel perpenticular a sua trajetória.
+
+Ponto de momento zero (ZMP - Zero Moment Point) é um dos métodos utilizados para resolver o problema considerando o centro de massa. Ele consiste, basicamente, em encontrar o ponto em que o movimento gera momento horizontal zero no centro de massa, ou seja, um equilíbrio, uma estabilidade dinâmica, visto que caminhar uma órbita periódica com uma fase estável alternada com um instável.
+
+Não importa qual for a abordagem utilizando modelos matemáticos e física, até o momento todas elas tem algo nível de complexidade de resolução e computação, e muitas vezes as soluções tem difícil adaptação para outros robôs.
 
 \section{Aprendizagem Por Reforço} \label{aprendizagem_por_reforco}
 
