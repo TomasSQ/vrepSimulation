@@ -1,0 +1,94 @@
+%%
+%% IEEEtsup.sty 2010/09/12
+%% 
+%% 
+%% This is a supplement to the official IEEE LaTeX class
+%% IEEEtran.cls 2007/03/05 version V1.7a,
+%% containing a few additional definitions and modifiers.
+%%
+%% Written by Michael Forger, with help from Michael Shell,
+%% which is gratefully acknowledged.
+%%
+%******************************************************************************
+%% 
+%% 1) Redefining the font controls and spacings for conference mode author
+%%    name and affiliation blocks:
+%% 
+%%    The default font styles for the author name and affiliation blocks:
+%%    Font for author names changed to small caps and for author affiliations
+%%    changed to slanted (no changes made to the default if the user does not
+%%    use separate author name and author affiliation blocks):
+\makeatletter
+\ifCLASSOPTIONconference
+ \renewcommand{\@IEEEauthorblockNstyle}{\normalfont\scshape%
+  \@IEEEcompsocnotconfonly{\sffamily}\sublargesize%
+  \@IEEEcompsocconfonly{\large}}
+ \renewcommand{\@IEEEauthorblockAstyle}{\normalfont\slshape%
+  \@IEEEcompsocnotconfonly{\sffamily}%
+  \@IEEEcompsocconfonly{\itshape}\normalsize\@IEEEcompsocconfonly{\large}}
+\else
+\fi
+\makeatother
+%%    Spacing from title (or special paper notice) to author name blocks: ok
+%%    Spacing between author name and author affiliation blocks: increased
+\makeatletter
+\ifCLASSOPTIONconference
+ \renewcommand{\@IEEEauthorblockAtopspace}{0.75ex}
+\else
+\fi
+\makeatother
+%%    It would be nice to have a command that allows to separately set
+%%    the spacing between: (a) the author name block and the first author
+%%    affiliation block, and: (b) the various author affiliation blocks,
+%%    but that doesn't seem to be available.
+%% 
+%% 2) Reducing the length of the dash (from em to en) and putting some spacing
+%%    around it in the abstract and keywords section:
+\makeatletter
+\renewcommand{\abstract}{\normalfont
+ \if@twocolumn
+  \@IEEEabskeysecsize\bfseries\textit{\abstractname}~--~\relax
+ \else
+  \begin{center}\vspace{-1.78ex}\@IEEEabskeysecsize\textbf{\abstractname}%
+  \end{center}\quotation\@IEEEabskeysecsize
+ \fi\@IEEEgobbleleadPARNLSP}
+\renewcommand{\IEEEkeywords}{\normalfont
+ \if@twocolumn
+  \@IEEEabskeysecsize\bfseries\textit{\IEEEkeywordsname}~--~\relax
+ \else
+  \begin{center}\@IEEEabskeysecsize\textbf{\IEEEkeywordsname}%
+  \end{center}\quotation\@IEEEabskeysecsize
+ \fi\@IEEEgobbleleadPARNLSP}
+\makeatother
+%%    For compsoc mode:
+\makeatletter
+\ifCLASSOPTIONcompsoc
+\ifCLASSOPTIONconference\else
+\renewcommand{\abstract}{\normalfont
+ \@IEEEtweakunitybaselinestretch{1.15}\sffamily
+ \if@twocolumn
+  \@IEEEabskeysecsize\noindent\textbf{\abstractname}~--~\relax
+ \else
+  \begin{center}\vspace{-1.78ex}\@IEEEabskeysecsize\textbf{\abstractname}%
+  \end{center}\quotation\@IEEEabskeysecsize
+ \fi\@IEEEgobbleleadPARNLSP}
+\renewcommand{\IEEEkeywords}{\normalfont
+ \@IEEEtweakunitybaselinestretch{1.15}\sffamily
+ \if@twocolumn
+  \@IEEEabskeysecsize\vskip 0.5\baselineskip plus 0.25\baselineskip minus 0.25%
+  \baselineskip\noindent\textbf{\IEEEkeywordsname}~--~\relax
+ \else
+  \begin{center}\@IEEEabskeysecsize\textbf{\IEEEkeywordsname}%
+  \end{center}\quotation\@IEEEabskeysecsize
+ \fi\@IEEEgobbleleadPARNLSP}
+\fi
+\fi
+\makeatother
+%% Adapting the term "proof" in the IEEEproof environment to foreign languages
+%% via Babel (unfortunately, the same procedure fails to work for the term
+%% "keywords" since \keywordsname is not defined in Babel.
+\renewcommand{\IEEEproofname}{\proofname}
+
+
+
+
