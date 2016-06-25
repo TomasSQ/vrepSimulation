@@ -1,0 +1,6 @@
+Report/*.aux
+Report/*.log
+Report/*.bbl
+Report/*.brf
+Report/*.blg
+Report/*.out
