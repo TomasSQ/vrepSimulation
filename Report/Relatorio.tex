@@ -1,3 +1,4 @@
+
 %% Adaptado de
 %% http://www.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/
 %% Traduzido para o congresso de IC da USP
@@ -95,6 +96,13 @@ Não importa qual for a abordagem utilizando modelos matemáticos e física, at�
 
 \section{Algoritmos Genéticos} \label{algoritmos_geneticos}
 Dada a proximidade que os algoritmos genéticos buscam ter com a natureza, e que os seres humanos são frutos de inúmeras evoluções de populações distintas de animais, parece natural avançar no problema de andar utilizando esta técnica da inteligência artificial. Nela buscamos encontrar, depois de várias gerações, um robô capaz de andar, sem cair, indeterminadamente.
+
+Para isso acontecer, antes de definir tamanho ideal para população, taxa de mutação, pontos de crossover, é necessário formular uma boa função fitness, e codificar um bom cromossomo.
+
+
+Cada indivíduo (cromossomo) da população é um vetor com $6N$ posições, onde $N$ é o número de juntas em que queremos otimizar suas rotações em função do tempo, e o número $6$ se dá por ser o número de constantes estipuladas em cada função de rotação em função do tempo $f(t) = \sum_{i=1}^6 a_i sen(b_i t)$. Desta forma cada articulação poderá ser utilizada de forma independente em perídos diferentes serapadas das demais.
+
+A função fitness inicial que utilizamos foi bem simples: distância percorrida até o robô cair, sendo que cair é: centro de massa do robô ter girado mais de 90º em qualquer eixo, e parar de se deslocar por alguns instantes. Para isso, para cada indivíduo da população, executou-se uma simulação, utilizando os valores decodificados de seu cromossomo como as constantes da função de rotação citada. A cada intervalo de 0.01s todas as articulações tem seus angulos atualizados de acordo com sua respectiva função, e é verificado se o robo andou, caiu, ficou parado.
 
 
 
