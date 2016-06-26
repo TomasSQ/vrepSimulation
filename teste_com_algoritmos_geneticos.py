@@ -14,7 +14,7 @@ DEBUG = True
 POPULATION_SIZE = 10
 COEF_RANGE = 1
 N_COEF = 5
-INDIVIDUAL_SIZE = 2 * N_COEF + 2
+JOINT_SIZE = 2 * N_COEF + 2
 DELTA_TIME = 1
 INTERVAL = 0.05 #50ms
 
@@ -61,7 +61,7 @@ creator.create("Individual", list, fitness = creator.FitnessMax)
 
 toolbox = base.Toolbox()
 toolbox.register("attr_coef", lambda: (random.random() * COEF_RANGE - COEF_RANGE / 2.0))
-toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_coef, len(Body) * INDIVIDUAL_SIZE)
+toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_coef, len(Body) * JOINT_SIZE)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 def evalRobot(individual):
@@ -74,7 +74,7 @@ def evalRobot(individual):
         joint_movements = []
 
         for i in xrange(len(Body)):
-            coefs = individual[i * INDIVIDUAL_SIZE:(i + 1) * INDIVIDUAL_SIZE]
+            coefs = individual[i * JOINT_SIZE:(i + 1) * JOINT_SIZE]
             joint_movements.append(truncated_Fourier(coefs, dt))
 
         JointControl(clientID, 0, Body, joint_movements)
