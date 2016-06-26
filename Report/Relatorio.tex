@@ -1,4 +1,3 @@
-
 %% Adaptado de
 %% http://www.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/
 %% Traduzido para o congresso de IC da USP
@@ -100,11 +99,9 @@ Dada a proximidade que os algoritmos genéticos buscam ter com a natureza, e que
 Para isso acontecer, antes de definir tamanho ideal para população, taxa de mutação, pontos de crossover, é necessário formular uma boa função fitness, e codificar um bom cromossomo.
 
 
-Cada indivíduo (cromossomo) da população é um vetor com $6N$ posições, onde $N$ é o número de juntas em que queremos otimizar suas rotações em função do tempo, e o número $6$ se dá por ser o número de constantes estipuladas em cada função de rotação em função do tempo $f(t) = \sum_{i=1}^6 a_i sen(b_i t)$. Desta forma cada articulação poderá ser utilizada de forma independente em perídos diferentes serapadas das demais.
+Cada indivíduo (cromossomo) da população é um vetor com $(2N+2)J$ posições, onde $J$ é o número de juntas em que queremos otimizar suas rotações em função do tempo, o número $(2N+2)$ se dá por ser o número de constantes estipuladas em cada função de rotação em função do tempo, e $N$ o número de termos da função $f(t) = \frac{a_0}{2}+\sum_{i=0}^N a_{2i+2} cos(a_{1} t) + a_{2i+3} sen(a_{1} t)$, onde $a_i$ é a i-nésima constante do indivíduo. Tal função é uma série de Fourier truncada, boa para representar funções perióticas e fazer, portanto, cada articulação poder ser utilizada de forma independente em perídos diferentes serapadas das demais.
 
-A função fitness inicial que utilizamos foi bem simples: distância percorrida até o robô cair, sendo que cair é: centro de massa do robô ter girado mais de 90º em qualquer eixo, e parar de se deslocar por alguns instantes. Para isso, para cada indivíduo da população, executou-se uma simulação, utilizando os valores decodificados de seu cromossomo como as constantes da função de rotação citada. A cada intervalo de 0.01s todas as articulações tem seus angulos atualizados de acordo com sua respectiva função, e é verificado se o robo andou, caiu, ficou parado.
-
-
+A função fitness inicial que utilizamos foi bem simples: distância percorrida até o robô cair, sendo que cair é: centro de massa do robô ter girado mais de 90º em qualquer eixo, e parar de se deslocar por alguns instantes. Para isso, para cada indivíduo da população, executou-se uma simulação, utilizando os valores decodificados de seu cromossomo como as constantes da função de rotação citada. A cada intervalo de 0.01s todas as articulações tem seus angulos atualizados de acordo com sua respectiva função, e é verificado se o robo andou, caiu
 
 \section{Conclusões} \label{conclusoes}
 
