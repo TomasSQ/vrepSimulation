@@ -100,6 +100,7 @@ R_Shoulder_Pitch=[];R_Shoulder_Roll=[];R_Elbow_Yaw=[];R_Elbow_Roll=[];R_Wrist_Ya
 R_H=[];L_H=[];R_Hand=[];L_Hand=[];
 Body = [Head_Yaw,Head_Pitch,L_Hip_Yaw_Pitch,L_Hip_Roll,L_Hip_Pitch,L_Knee_Pitch,L_Ankle_Pitch,L_Ankle_Roll,R_Hip_Yaw_Pitch,R_Hip_Roll,R_Hip_Pitch,R_Knee_Pitch,R_Ankle_Pitch,R_Ankle_Roll,L_Shoulder_Pitch,L_Shoulder_Roll,L_Elbow_Yaw,L_Elbow_Roll,L_Wrist_Yaw,R_Shoulder_Pitch,R_Shoulder_Roll,R_Elbow_Yaw,R_Elbow_Roll,R_Wrist_Yaw,L_H,L_Hand,R_H,R_Hand]
 
+#Multiplicador das juntas do NAO
 Head_Yaw=0;Head_Pitch=0;
 L_Hip_Yaw_Pitch=1.0;L_Hip_Roll=1.0;L_Hip_Pitch=1.0;L_Knee_Pitch=1.0;L_Ankle_Pitch=1.0;L_Ankle_Roll=0.0;
 R_Hip_Yaw_Pitch=1.0;R_Hip_Roll=1.0;R_Hip_Pitch=1.0;R_Knee_Pitch=1.0;R_Ankle_Pitch=1.0;R_Ankle_Roll=0.0;
