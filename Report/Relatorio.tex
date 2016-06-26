@@ -1,3 +1,4 @@
+
 %% Adaptado de
 %% http://www.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/
 %% Traduzido para o congresso de IC da USP
@@ -69,7 +70,7 @@ Neste trabalho, desenvolvemos diferentes modelos e implementações para o probl
 
 \begin{figure}[H]
  \centering
- \includegraphics[width=1\hsize]{figuras/{NAO}.png}
+ \includegraphics[scale=1]{figuras/{NAO}.png}
  \caption{Exemplo robô NAO utilizado neste trabalho, um modelo humanóide da empresa francesa Aldebaran extremamente complexo, com 26 graus-de-liberdade (juntas) e diversos tipos de sensores}
  \label{fig:fig1}
 \end{figure}
@@ -113,7 +114,7 @@ Para análisar a viabilidade da solução, decidimos testar usando um conjunto b
 
 
  \begin{table}[h]
- \caption{Dados redes neurais com 27 entradas (indice do movimento + 26 posições de juntas}
+ \caption{Dados redes neurais com 27 entradas (indice do movimento + 26 posições de juntas) para \textsl{dataset} completo (2999 entradas)}
  \label{redes_neurais_tabela_1}
  \begin{center}
  \begin{tabular}{|c|c|c|c|}
@@ -148,7 +149,7 @@ Para análisar a viabilidade da solução, decidimos testar usando um conjunto b
 Decidimos simplificar a entrada: em vez de incluirmos o número do movimento, usaríamos somente a posição das juntas como entrada. Nossa idéia inicial ao incluir o número do movimento era ajudar o robô a ter um parâmetro a mais para decidir e, além disso, o movimento de andar é um movimento ciclíco, então imaginamos que a rede seria capaz de observar um padrão interessante dessa entrada. Porém, como os dados da tabela \ref{redes_neurais_tabela_2} mostram, nos equivocamos nisso: essa entrada não só não ajudou em nada, como prejudicou a convergência da rede neural.
 
  \begin{table}[h]
-\caption{Dados redes neurais com 26 entradas (as 26 posições de juntas}
+\caption{Dados redes neurais com 26 entradas (as 26 posições de juntas) para \textsl{dataset} completo (2999 entradas)}
  \label{redes_neurais_tabela_2}
  \begin{center}
  \begin{tabular}{|c|c|c|c|}
@@ -163,16 +164,16 @@ Decidimos simplificar a entrada: em vez de incluirmos o número do movimento, us
  1 & 50 & 0.3 & 0.0533666052268 \\
  3 & 10 &  0.01 & 0.0622194830427\\
  3 &  30 & 0.01 & 0.053521956846 \\ 
- 3 &  50 & 0.01 & \\
+ 3 &  50 & 0.01 & 0.0311919046022\\
  3 & 10 &  0.3 & 0.0337463692068 \\
  3 &  30 & 0.3 & 0.0302587699045 \\
- 3 &  50 & 0.3 &  \\
- 10 & 10 & 0.01 & \\
-10 &  30 & 0.01 &  \\
-10 &  50 & 0.01 & \\
-10 & 10 & 0.3  &  \\
-10 &  30 & 0.3 & \\
-10 &  50 & 0.3 & \\
+ 3 &  50 & 0.3 &  0.0328621219436\\
+ 10 & 10 & 0.01 &  0.0552839022201 \\
+10 &  30 & 0.01 & 0.0310246666045 \\
+10 &  50 & 0.01 & 0.0323538519379 \\
+10 & 10 & 0.3  &  0.0201064129557 \\
+10 &  30 & 0.3 & 0.0301485132897 \\
+10 &  50 & 0.3 & 0.0162431820288 \\
  \hline
  \end{tabular}
  \end{center}
@@ -181,29 +182,27 @@ Decidimos simplificar a entrada: em vez de incluirmos o número do movimento, us
 Com esses dados em mão, decidimos dar uma boa quantidade de épocas para o treinamento, treinar com um segundo \textsl{dataset} menor  - com 500 entradas - e fixar a rede neural em 3  camadas escondidas para o \textsl{dataset} menor e em 10 para o \textsl{dataset} maior. Por último, fixamos a taxa de aprendizado em $0.3$ para ambos os \textsl{datasets}. Conforme os dados mostram \ref{redes_neurais_tabela_3}, obtivemos melhores resultados de convergência.
 
  \begin{table}[h]
-\caption{Dados redes neurais com 26 entradas (as 26 posições de juntas}
+\caption{Redes Neurais ótimas obtidas por treinamento longo}
  \label{redes_neurais_tabela_3}
  \begin{center}
- \begin{tabular}{|c|c|c|c|}
+ \begin{tabular}{|c|c|c|c|c|}
  \hline
- Tamaho Dataset & Hidden Layers & Épocas & Erro Quadrático (rmse) \\
+ $I$ & \# Dataset & Hidden Layers & Épocas & Erro Quadrático (rmse) \\
  \hline
- 500  & 3 & 600 & 0.0636479207235 \\
- 2999 & 10 & 600 & 0.0614250925212 \\
+ 1 & 500  & 3 & 600 & 0.0272638446791 \\
+ 2 & 2999 & 10 & 600 & 0.00887537932562 \\
  \hline
  \end{tabular}
  \end{center}
  \end{table}  
 
-Com todas essas reudes neurais treinadas e prontas para serem usadas, decidimos testar as mais promissoras delas, que no caso, foram as que foram treinadas por mais tempo, apresentadas na \ref{redes_neurais_tabela_3}, além de darmos uma chance para a melhor das redes neurais da tabela \ref{redes_neurais_tabela_1}.
+Com todas essas reudes neurais treinadas e prontas para serem usadas, decidimos testar as mais promissoras delas, que no caso, foram as que foram treinadas por mais tempo, apresentadas na \ref{redes_neurais_tabela_3}, além de darmos uma chance para a melhor das redes neurais da tabela \ref{redes_neurais_tabela_1}. Por comodidade, também vamos eventualmente nos referir às redes da tabela \ref{redes_neurais_tabela_3} pelo número da coluna $I$.
 
 \subsection{Aplicando as Redes Neurais no Robô}
 
 Para aplicar a rede neural no robô fizemos uma função que lê a posição de todas as juntas no VREP e na ordem que usamos de treinamento. Essa função é utilizada num \textsl{loop} que lê a posição das juntas, usá-as como entrada da rede, obtém a saída e envia o comando de para as juntas irem nas posições de saida.
 
-Como era de se esperar olhando a convergência da rede, quando aplicamos a melhor rede neural  da tabela \ref{redes_neurais_tabela_1} obtivemos um resultado ruim, o robô simplemente desequilibrou e caiu conforme vemos na imagem %TODO %..
-
-% TODO IMAGEM
+Como era de se esperar olhando a convergência da rede, quando aplicamos a melhor rede neural  da tabela \ref{redes_neurais_tabela_1} obtivemos um resultado ruim, o robô simplemente desequilibrou.
 
 Tentamos então utilizar a rede neural treinada por 600 épocas com o \textsl{dataset} de $2999$. O resultado também não foi bom. O robô tentava dar o primeiro passo e sair da posição inicial, porém se desequilibrava e caía. Há, contudo, uma observação interessante a ser feita: mesmo no chão o robô movia as pernas num movimento semelhante a andar, como é possível ver na sequência de imagens %TODO%.
 
@@ -214,8 +213,17 @@ Por último, testamos a rede neural treinada com $500$ exemplos de movimentaçã
 
 %TODO colocar imagens.
 
-Ao obsevarmos os comportamentos decidimos testar uma abordagem mista, ou seja, fazer os primeiros movimentos do robô com a rede neural treinada com menos exemplos e depois continuar os movimentos usando a segunda rede neural testada. O resultado disso foi que, finalmente, conseguimos replicar, ainda que de forma não tão precisa, os movimentos de andar que a biblioteca do NAOqi implementa. Esses movimentos podem ser vistos na figura %TODO %
-.
+Ao obsevarmos os comportamentos decidimos testar uma abordagem mista, ou seja, fazer os primeiros movimentos do robô com a rede neural treinada com menos exemplos e depois continuar os movimentos usando a segunda rede neural testada. O resultado disso foi que, finalmente, conseguimos replicar, ainda que de forma não tão precisa, os movimentos de andar que a biblioteca do NAOqi implementa. Esses movimentos podem ser vistos na figura %TODO %.
+
+\subsection{Interpretação dos Testes e dos Resultados Obtidos}
+
+Nossos testes reforçaram a dificuldade esmiúçadas na seção \ref{dificuldades}. Para a abordagem de aprendizado supervisionado, a maior dificuldade foi o robô fazer os movimentos de andar mantendo o equilíbrio. O fato de uma rede neural ter a capacidade de aprender funções complexas, incluindo as não-lineares - como é o caso -  fez com que essa solução funcionasse.
+
+Contudo, foi uma surpresa para nós as condições para as quais isso funcionou ou, equivalentemente, o comportamento que observamos quando combinamos as duas melhores redes neurais. Essa supresa se deve principalmente em relação ao comportamento que observamos quando testamos as redes isoladamente. Ficamos instigados a descobrir o motivo disso. Infelizmente, uma das características de redes neurais quando comparadas com outros método, como a árvore de decisão, é que é muito dificil prever totalmente o estado que a rede ficará, sendo assim só conseguimos pensar em suposições. 
+
+Virou consenso entre nós que o principal motivo desse comportamento se deve a caractéristica ciclica do movimento de andar. Há um certo compasso que se repete a cada passo e, na nossa, visão foi esse compasso que a rede neural aprendeu, porém, devido à quantidade de exemplos dados para o movimento de andar no caso do \textsl{dataset} maior, ela aprendeu esse padrão às custas de desaprender o movimento de sair da posição inicial e buscar estabilidade antes de dar o primeiro passo. Quando treinamos uma rede neural similar com um \textsl{dataset} menor, essa segunda rede aprendeu a sequencia de movimentos para andar de forma incompleta, contudo isso possibilitou que o movimento inicial para ganhar estabilidade e se preparar para andar fosse aprendido e não sobreescrito pelo padrão de movimento usado para caminhar.
+
+Tentamos melhorar o resultado treinando a rede neural 2 com um \textsl{dataset} menor, com somente os movimentos iniciais. Fizemos isso por 100 épocas, porém não conseguimos melhorar o erro da rede. Esse resultado mostra que a rede está bem encaixada para o problema, sendo díficil mexer nos seus pesos sem prejudicar o valor do erro. Para trabalhos futuros sugerimos um estudo mais a fundo da possibilidade de retreinar a rede com esse dataset limitado, provavelmente adicionando um distúrbio nela ou um mecanismo de \textsl{weight decay}\cite{hastie01statisticallearning}.  
 
 \section{Algoritmos Genéticos} \label{algoritmos_geneticos}
 Dada a proximidade que os algoritmos genéticos buscam ter com a natureza, e que os seres humanos são frutos de inúmeras evoluções de populações distintas de animais, parece natural avançar no problema de andar utilizando esta técnica da inteligência artificial. Nela buscamos encontrar, depois de várias gerações, um robô capaz de andar, sem cair, indeterminadamente.
@@ -223,13 +231,11 @@ Dada a proximidade que os algoritmos genéticos buscam ter com a natureza, e que
 Para isso acontecer, antes de definir tamanho ideal para população, taxa de mutação, pontos de crossover, é necessário formular uma boa função fitness, e codificar um bom cromossomo.
 
 
-Cada indivíduo (cromossomo) da população é um vetor com $(2N+2)J$ posições, onde $J$ é o número de juntas em que queremos otimizar suas rotações em função do tempo, o número $(2N+2)$ se dá por ser o número de constantes estipuladas em cada função de rotação em função do tempo, e $N$ o número de termos da função $f(t) = \frac{a_0}{2}+\sum_{i=0}^N a_{2i+2} cos(a_{1} t) + a_{2i+3} sen(a_{1} t)$, onde $a_i$ é a i-nésima constante do indivíduo. Tal função é uma série de Fourier truncada, boa para representar funções perióticas e fazer, portanto, cada articulação poder ser utilizada de forma independente em perídos diferentes serapadas das demais.
+Cada indivíduo (cromossomo) da população é um vetor com $6N$ posições, onde $N$ é o número de juntas em que queremos otimizar suas rotações em função do tempo, e o número $6$ se dá por ser o número de constantes estipuladas em cada função de rotação em função do tempo $f(t) = \sum_{i=1}^6 a_i sen(b_i t)$. Desta forma cada articulação poderá ser utilizada de forma independente em perídos diferentes serapadas das demais.
 
-A função fitness inicial que utilizamos foi bem simples: distância percorrida até o robô cair, sendo que cair é: centro de massa do robô ter girado mais de 90º em qualquer eixo, e parar de se deslocar por alguns instantes. Para isso, para cada indivíduo da população, executou-se uma simulação, utilizando os valores decodificados de seu cromossomo como as constantes da função de rotação citada. A cada intervalo de 0.01s todas as articulações tem seus angulos atualizados de acordo com sua respectiva função, e é verificado se o robo andou, caiu.
+A função fitness inicial que utilizamos foi bem simples: distância percorrida até o robô cair, sendo que cair é: centro de massa do robô ter girado mais de 90º em qualquer eixo, e parar de se deslocar por alguns instantes. Para isso, para cada indivíduo da população, executou-se uma simulação, utilizando os valores decodificados de seu cromossomo como as constantes da função de rotação citada. A cada intervalo de 0.01s todas as articulações tem seus angulos atualizados de acordo com sua respectiva função, e é verificado se o robo andou, caiu, ficou parado.
 
-A implementação do algoritmo genético foi feita utilizando uma biblioteca em pyhton conhecida para isso (DEAP). Com ela, definimos a função fitness descrita, os indivíduos, e optamos por uma população pequena - 20 - visto que demora executar a função fitness para cada cromossomo. A seleção de pais para reprodução assexuada se deu por torneio.
 
-Nossos testes mostraram que depois de 10 gerações, todos os indivíduos praticamente já iam exclusivamente para frente, mesmo que caindo. Demonstrando que a população aprendeu que ir para trás não é o desejado.
 
 \section{Conclusões} \label{conclusoes}
 
