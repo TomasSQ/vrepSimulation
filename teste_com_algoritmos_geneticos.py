@@ -13,11 +13,11 @@ DEBUG = True
 
 POPULATION_SIZE = 20
 COEF_RANGE = 1.0
-N_COEF = 5
+N_COEF = 1
 JOINT_SIZE = 2 * N_COEF + 2
 DELTA_TIME = 5
 INTERVAL = 0.05 #50ms
-ANGLE_THRESHOLD = 10.0
+ANGLE_THRESHOLD = 10.0 * (math.pi)/180
 
 #Serie de Fourier Truncada
 def truncated_Fourier(coeficients, time):
@@ -68,20 +68,15 @@ toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 def evalRobot(individual):
     reset_simulation(clientID)
     dt = 0
+
     fit = 0
 
     ox = 0.0
-
-    ret, orientation = vrep.simxGetObjectOrientation(clientID, NAO, -1, vrep.simx_opmode_blocking)
-
-    orientation_alpha = orientation[0]
-    orientation_beta = orientation[1]
-
+    negative_walk = 0
 
     while dt < DELTA_TIME:
         joint_movements = []
 
-        fit = 0
         for i in xrange(len(Body)):
             coefs = individual[i * JOINT_SIZE:(i + 1) * JOINT_SIZE]
             joint_movements.append(truncated_Fourier(coefs, dt))
@@ -92,22 +87,40 @@ def evalRobot(individual):
         dx = (x - ox)
         ox = x
 
+        if dx < 0.0:
+            negative_walk += 1
+        else:
+            negative_walk = 0
+
         ret, orientation = vrep.simxGetObjectOrientation(clientID, NAO, -1, vrep.simx_opmode_blocking)
 
-        orientation_alpha = min(ANGLE_THRESHOLD, max(-ANGLE_THRESHOLD, orientation[0]) )
-        orientation_beta = min(ANGLE_THRESHOLD, max(-ANGLE_THRESHOLD, orientation[0]) )
+        orientation_alpha = min(ANGLE_THRESHOLD, max(-ANGLE_THRESHOLD, orientation[0]))
+        orientation_beta = min(ANGLE_THRESHOLD, max(-ANGLE_THRESHOLD, orientation[1]))
+        orientation_gama = min(ANGLE_THRESHOLD, max(-ANGLE_THRESHOLD, orientation[2]))
 
-        ha = hb = 0
+        ha = hb = hg = 0
         if orientation_alpha >= 0.0 :
             ha = (- orientation_alpha) / ANGLE_THRESHOLD + 1.0
         else:
             ha = (orientation_alpha + ANGLE_THRESHOLD) / ANGLE_THRESHOLD
+
         if orientation_beta >= 0.0 :
             hb = (- orientation_beta) / ANGLE_THRESHOLD + 1.0
         else:
             hb = (orientation_beta + ANGLE_THRESHOLD) / ANGLE_THRESHOLD
 
-        fit += (ha * hb * dx)
+        if orientation_gama >= 0.0 :
+            hg = (- orientation_gama) / ANGLE_THRESHOLD + 1.0
+        else:
+            hg = (orientation_gama + ANGLE_THRESHOLD) / ANGLE_THRESHOLD
+
+        fit += (ha * hb * hg * dx)
+
+        if (ha * hb * hg < 0.00000001):
+            break
+
+        if negative_walk >= 10:
+            break
 
 
         time.sleep(INTERVAL)
