@@ -9,17 +9,22 @@ from deap import base
 from deap import creator
 from deap import tools
 
+DEBUG = True
+
+POPULATION_SIZE = 20
+COEF_RANGE = 1
 N_COEF = 5
-INDIVIDUAL_SIZE=2 * N_COEF + 2
-INTERVAL=0.05 #50ms
+INDIVIDUAL_SIZE = 2 * N_COEF + 2
+DELTA_TIME = 1
+INTERVAL = 0.05 #50ms
 
 #Serie de Fourier Truncada
 def truncated_Fourier(coeficients, time):
     value = coeficients[0] / 2.0
 
     for i in xrange(N_COEF):
-        value += coeficients[2 * i + 2] * math.cos(coeficients[1] * time)
-        value += coeficients[2 * i + 3] * math.sin(coeficients[1] * time)
+        value += coeficients[2 * i + 2] * math.cos((i + 1) * coeficients[1] * time)
+        value += coeficients[2 * i + 3] * math.sin((i + 1) * coeficients[1] * time)
 
     return value
 
@@ -55,15 +60,15 @@ creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", list, fitness = creator.FitnessMax)
 
 toolbox = base.Toolbox()
-toolbox.register("attr_coef", lambda: (random.random() * 1 - 0.5))
+toolbox.register("attr_coef", lambda: (random.random() * COEF_RANGE - COEF_RANGE / 2.0))
 toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_coef, len(Body) * INDIVIDUAL_SIZE)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 def evalRobot(individual):
     reset_simulation(clientID)
     dt = 0
-    shead = 0
-    h = vrep.simxGetObjectPosition(clientID, NAO_Head, -1, vrep.simx_opmode_blocking)[1][2] - 0.1
+    shead = vrep.simxGetObjectPosition(clientID, NAO_Head, -1, vrep.simx_opmode_blocking)[1][2] - 0.4
+    sx = vrep.simxGetObjectPosition(clientID, NAO, -1, vrep.simx_opmode_blocking)[1][0]
 
     while dt < 1:
         joint_movements = []
@@ -71,23 +76,22 @@ def evalRobot(individual):
         for i in xrange(len(Body)):
             coefs = individual[i * INDIVIDUAL_SIZE:(i + 1) * INDIVIDUAL_SIZE]
             joint_movements.append(truncated_Fourier(coefs, dt))
+
         JointControl(clientID, 0, Body, joint_movements)
-        hn = vrep.simxGetObjectPosition(clientID, NAO_Head, -1, vrep.simx_opmode_blocking)[1][2] - 0.1
-        shead += (hn-h)
-        h = hn
+        h = vrep.simxGetObjectPosition(clientID, NAO_Head, -1, vrep.simx_opmode_blocking)[1][2] - 0.4
+        x = vrep.simxGetObjectPosition(clientID, NAO, -1, vrep.simx_opmode_blocking)[1][0]
+        shead += h
+        sx += x
+
         time.sleep(INTERVAL)
         dt += INTERVAL
 
-    ret, robot_position = vrep.simxGetObjectPosition(clientID, NAO, -1, vrep.simx_opmode_blocking)
-    ret, head_position = vrep.simxGetObjectPosition(clientID, NAO_Head, -1, vrep.simx_opmode_blocking)
-    #xfactor consiste na posicao x que o NAO andou
-    x_factor = robot_position[0]
-    fit = (shead*x_factor)
-    print(fit)
+    fit = min(shead, (sx / 4.0))
+    if DEBUG: print(fit)
     return fit,
 
 def mutate(individual):
-    return [(random.random() * 1 - 0.5) for x in individual if random.random() < 0.05]
+    return [(random.random() * COEF_RANGE - COEF_RANGE / 2.0) for x in individual if random.random() < 0.05]
 
 toolbox.register("evaluate", evalRobot)
 toolbox.register("mate", tools.cxTwoPoint)
@@ -95,28 +99,31 @@ toolbox.register("mutate", mutate)
 toolbox.register("select",tools.selTournament, tournsize = 3)
 
 def main():
-    pop = toolbox.population(n = 20)
+    pop = toolbox.population(n = POPULATION_SIZE)
 
     CXPB, MUTPB, NGEN = 0.6, 0.2, 40
 
+    if DEBUG: print("-- Life Span --")
     fitnesses = list(map(toolbox.evaluate, pop))
     for ind, fit in zip(pop, fitnesses):
         ind.fitness.values = fit
 
     for g in xrange(NGEN):
-        print("-- Generation %i --" % g)
+        print("-- Generation %i --" % g+1)
 
         offspring = toolbox.select(pop, len(pop))
         offspring = list(map(toolbox.clone, offspring))
 
+        if DEBUG: print("-- CROSSOVER --")
         for child1, child2 in zip(offspring[::2],offspring[1::2]):
             if random.random() < CXPB:
                 toolbox.mate(child1, child2)
                 del child1.fitness.values
                 del child2.fitness.values
 
+        if DEBUG: print("-- MUTATION --")
         for mutant in offspring:
-            if random.random()<MUTPB:
+            if random.random() < MUTPB:
                 toolbox.mutate(mutant)
                 del mutant.fitness.values
 
@@ -138,7 +145,10 @@ def main():
         print("  Std %s" % std)
         #TODO escrever melhor cromossomo print tools.selBest(pop, k=1)
 
+        if DEBUG: print("   Best Chromossome: ", tools.selBest(offspring, k = 1))
+
         pop[:] = offspring
+    print("   The Walker: ", tools.selBest(pop, k = 1))
 
 if __name__ == "__main__":
     main()
