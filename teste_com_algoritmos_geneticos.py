@@ -10,6 +10,8 @@ from deap import creator
 from deap import tools
 
 N_COEF = 5
+INDIVIDUAL_SIZE=2 * N_COEF + 2
+INTERVAL=0.05 #50ms
 
 #Serie de Fourier Truncada
 def truncated_Fourier(coeficients, time):
@@ -54,7 +56,7 @@ creator.create("Individual", list, fitness = creator.FitnessMax)
 
 toolbox = base.Toolbox()
 toolbox.register("attr_coef", lambda: (random.random() * 1 - 0.5))
-toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_coef, len(Body) * (2 * N_COEF + 2))
+toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_coef, len(Body) * INDIVIDUAL_SIZE)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 def evalRobot(individual):
@@ -67,14 +69,14 @@ def evalRobot(individual):
         joint_movements = []
 
         for i in xrange(len(Body)):
-            coefs = individual[i * (2 * N_COEF + 2):(i + 1) * (2 * N_COEF + 2)]
+            coefs = individual[i * INDIVIDUAL_SIZE:(i + 1) * INDIVIDUAL_SIZE]
             joint_movements.append(truncated_Fourier(coefs, dt))
         JointControl(clientID, 0, Body, joint_movements)
         hn = vrep.simxGetObjectPosition(clientID, NAO_Head, -1, vrep.simx_opmode_blocking)[1][2] - 0.1
         shead += (hn-h)
         h = hn
-        time.sleep(0.01)
-        dt += 0.01
+        time.sleep(INTERVAL)
+        dt += INTERVAL
 
     ret, robot_position = vrep.simxGetObjectPosition(clientID, NAO, -1, vrep.simx_opmode_blocking)
     ret, head_position = vrep.simxGetObjectPosition(clientID, NAO_Head, -1, vrep.simx_opmode_blocking)
