@@ -9,16 +9,17 @@ from deap import base
 from deap import creator
 from deap import tools
 
-N_COEF = 1
+N_COEF = 5
 
-#Serie de Fourier Discreta
+#Serie de Fourier Truncada
 def truncated_Fourier(coeficients, time):
-    value = coeficients[0]/2.0
-    for i in xrange(N_COEF):
-        value += coeficients[2*i + 1] * math.cos((i+1) * time)
-        value += coeficients[2*i + 2] * math.sin((i+1) * time)
-    return value
+    value = coeficients[0] / 2.0
 
+    for i in xrange(N_COEF):
+        value += coeficients[2 * i + 1] * math.cos(coeficients[1] * time)
+        value += coeficients[2 * i + 2] * math.sin(coeficients[1] * time)
+
+    return value
 
 #Conexao com o vrep
 vrep.simxFinish(-1) # just in case, close all opened connections
@@ -52,27 +53,28 @@ creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", list, fitness = creator.FitnessMax)
 
 toolbox = base.Toolbox()
-toolbox.register("attr_coef", lambda: (random.random()*1 - 0.5))
-toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_coef, (26)*(N_COEF*2+1))
+toolbox.register("attr_coef", lambda: (random.random() * 1 - 0.5))
+toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_coef, len(Body) * (2 * N_COEF + 2))
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 def evalRobot(individual):
     reset_simulation(clientID)
     dt = 0
     shead = 0
-    h = vrep.simxGetObjectPosition(clientID, NAO_Head, -1, vrep.simx_opmode_blocking)[1][2]-0.1
-    while dt < 3:
+    h = vrep.simxGetObjectPosition(clientID, NAO_Head, -1, vrep.simx_opmode_blocking)[1][2] - 0.1
 
+    while dt < 1:
         joint_movements = []
-        for i in xrange(26):
-            coefs = individual[i * (N_COEF*2+1):(i+1)*(N_COEF*2+1)]
+
+        for i in xrange(len(Body)):
+            coefs = individual[i * (2 * N_COEF + 2):(i + 1) * (2 * N_COEF + 2)]
             joint_movements.append(truncated_Fourier(coefs, dt))
         JointControl(clientID, 0, Body, joint_movements)
-        hn = vrep.simxGetObjectPosition(clientID, NAO_Head, -1, vrep.simx_opmode_blocking)[1][2]-0.1
+        hn = vrep.simxGetObjectPosition(clientID, NAO_Head, -1, vrep.simx_opmode_blocking)[1][2] - 0.1
         shead += (hn-h)
         h = hn
-        time.sleep(0.1)
-        dt += 0.1
+        time.sleep(0.01)
+        dt += 0.01
 
     ret, robot_position = vrep.simxGetObjectPosition(clientID, NAO, -1, vrep.simx_opmode_blocking)
     ret, head_position = vrep.simxGetObjectPosition(clientID, NAO_Head, -1, vrep.simx_opmode_blocking)
@@ -83,21 +85,22 @@ def evalRobot(individual):
     return fit,
 
 def mutate(individual):
-    return [(random.random()*1 - 0.5) for x in individual if random.random()<0.05]
+    return [(random.random() * 1 - 0.5) for x in individual if random.random() < 0.05]
 
 toolbox.register("evaluate", evalRobot)
 toolbox.register("mate", tools.cxTwoPoint)
 toolbox.register("mutate", mutate)
-toolbox.register("select",tools.selTournament, tournsize=3)
+toolbox.register("select",tools.selTournament, tournsize = 3)
 
 def main():
-    pop = toolbox.population(n=10)
+    pop = toolbox.population(n = 20)
 
     CXPB, MUTPB, NGEN = 0.6, 0.2, 40
 
     fitnesses = list(map(toolbox.evaluate, pop))
     for ind, fit in zip(pop, fitnesses):
         ind.fitness.values = fit
+
     for g in xrange(NGEN):
         print("-- Generation %i --" % g)
 
@@ -117,6 +120,7 @@ def main():
 
         invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
         fitnesses = map(toolbox.evaluate,invalid_ind)
+
         for ind, fit in zip(invalid_ind, fitnesses):
             ind.fitness.values = fit
 
