@@ -92,6 +92,8 @@ Não importa qual for a abordagem utilizando modelos matemáticos e física, at�
 
 \section{Aprendizagem Por Reforço} \label{aprendizagem_por_reforco}
 
+
+
 \section{Aprendizagem Supervisionada} \label{aprendizagem_supervisionada}
 
 Uma das técnicas clássicas da IA, especialmente a parte da IA voltada a \textsl{Machine learning}, é a técnica de aprendizagem supervisionada. Nela, dado um conjunto de entradas e as respectivas saídas esperadas, busca-se inferir a função que gerou esses dados para, dado uma entrada desconhecida, poder ter uma estimativa do valor de saida.
@@ -236,7 +238,7 @@ A função fitness inicial que utilizamos foi bem simples: distância percorrida
 
 Nossos testes mostraram que depois de 10 gerações, todos os indivíduos praticamente já iam exclusivamente para frente, mesmo que caindo. Demonstrando que a população aprendeu que ir para trás não é o desejado. Entretanto ainda não fazia nenhum indicativo de passo de caminhada.
 
-Então melhoramos a função fitness, colocando alguns cálculos a mais que indicam fazem uma caminhada algo melhor do que simplesmente cair. A ideia é reforçar movimentos que indicam que está caminhando com cabeça erguida, penalizando quedas ou ir, de alguma forma, para trás.
+Então melhoramos a função fitness, colocando alguns cálculos a mais que indicam fazem uma caminhada algo melhor do que simplesmente cair. A ideia é reforçar movimentos que indicam que está caminhando com cabeça erguida, penalizando quedas ou ir, de alguma forma, para trás. Com esta função fitness melhorada, os resultados também foram melhores, mas ainda sim estavam longes de serem os desejados. O robô aprendeu a cair "lentamente" e para frente, o que, segundo a função fitness, dá um resultado melhor do que ficar parado, ou caior para os lados, e no chão até chega a dobrar as pernas, porém não adianta mais.
 
 \section{Conclusões} \label{conclusoes}
 
