@@ -15,8 +15,8 @@ N_COEF = 1
 def truncated_Fourier(coeficients, time):
     value = coeficients[0]/2.0
     for i in xrange(N_COEF):
-        value += coeficients[2*i + 1] * math.cos((i+1) * time)
-        value += coeficients[2*i + 2] * math.sin((i+1) * time)
+        value += coeficients[2*i + 2] * math.cos(coeficients[1] * time)
+        value += coeficients[2*i + 3] * math.sin(coeficients[1] * time)
     return value
 
 
