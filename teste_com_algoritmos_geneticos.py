@@ -149,10 +149,11 @@ def main():
         print("  Avg %s" % mean)
         print("  Std %s" % std)
 
-        if DEBUG: print("   Best Chromossome: ", tools.selBest(offspring, k = 1))
+        if DEBUG: print("   Best Chromossome: %s"%tools.selBest(offspring, k = 1))
 
         pop[:] = offspring
-    print("   The Walker: ", tools.selBest(pop, k = 1))
+
+    print("   The Walker: %s"% tools.selBest(pop, k = 1))
 
 if __name__ == "__main__":
     main()
