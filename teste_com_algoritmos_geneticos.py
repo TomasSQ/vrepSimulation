@@ -84,11 +84,6 @@ clientID = vrep.simxStart('127.0.0.1',19997,True,True,5000,5) # Conecta com o VR
 if clientID == -1:
     exit (10)
 
-#Reset da simulacao
-def reset_simulation(clientID):
-    vrep.simxStopSimulation(clientID, vrep.simx_opmode_oneshot)
-    time.sleep(1) # um pequeno sleep entre o stop e o start
-    vrep.simxStartSimulation(clientID, vrep.simx_opmode_oneshot)
 
 
 #Juntas do NAO
@@ -111,6 +106,22 @@ control_joints = [Head_Yaw,Head_Pitch,L_Hip_Yaw_Pitch,L_Hip_Roll,L_Hip_Pitch,L_K
 [Head_Yaw,Head_Pitch,]
 
 get_all_handles(3, clientID,Body)
+f = file('start_moviment_ga.txt')
+
+startMoves = []
+for line in f:
+    split_line = line.split(' ')
+    startMoves += [[float(x) for x in split_line[1:]]]
+
+#Reset da simulacao
+def reset_simulation(clientID):
+    vrep.simxStopSimulation(clientID, vrep.simx_opmode_oneshot)
+    time.sleep(1) # um pequeno sleep entre o stop e o start
+    vrep.simxStartSimulation(clientID, vrep.simx_opmode_oneshot)
+    for move in startMoves:
+        JointControl(clientID, 0, Body, move)
+        time.sleep(0.1)
+
 
 ret, NAO = vrep.simxGetObjectHandle(clientID, "NAO", vrep.simx_opmode_blocking)
 ret, NAO_Head = vrep.simxGetObjectHandle(clientID, "HeadYaw", vrep.simx_opmode_blocking)
