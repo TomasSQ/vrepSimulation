@@ -11,8 +11,8 @@ from deap import tools
 
 DEBUG = True
 
-POPULATION_SIZE = 10
-COEF_RANGE = 1
+POPULATION_SIZE = 20
+COEF_RANGE = 1.0
 N_COEF = 5
 INDIVIDUAL_SIZE = 2 * N_COEF + 2
 DELTA_TIME = 1
@@ -67,8 +67,6 @@ toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 def evalRobot(individual):
     reset_simulation(clientID)
     dt = 0
-    shead = vrep.simxGetObjectPosition(clientID, NAO_Head, -1, vrep.simx_opmode_blocking)[1][2] - 0.4
-    sx = vrep.simxGetObjectPosition(clientID, NAO, -1, vrep.simx_opmode_blocking)[1][0]
 
     while dt < 1:
         joint_movements = []
@@ -78,15 +76,11 @@ def evalRobot(individual):
             joint_movements.append(truncated_Fourier(coefs, dt))
 
         JointControl(clientID, 0, Body, joint_movements)
-        h = vrep.simxGetObjectPosition(clientID, NAO_Head, -1, vrep.simx_opmode_blocking)[1][2] - 0.4
-        x = vrep.simxGetObjectPosition(clientID, NAO, -1, vrep.simx_opmode_blocking)[1][0]
-        shead += h
-        sx += x
 
         time.sleep(INTERVAL)
         dt += INTERVAL
 
-    fit = min(shead, (sx / 4.0))
+    fit = vrep.simxGetObjectPosition(clientID, NAO, -1, vrep.simx_opmode_blocking)[1][0]
     if DEBUG: print(fit)
     return fit,
 
@@ -149,10 +143,10 @@ def main():
         print("  Avg %s" % mean)
         print("  Std %s" % std)
 
-        if DEBUG: print("   Best Chromossome: ", tools.selBest(offspring, k = 1))
+        if DEBUG: print("   Best Chromossome: %s"% tools.selBest(offspring, k = 1))
 
         pop[:] = offspring
-    print("   The Walker: ", tools.selBest(pop, k = 1))
+    print("   The Walker: %s" % tools.selBest(pop, k = 1))
 
 if __name__ == "__main__":
     main()
