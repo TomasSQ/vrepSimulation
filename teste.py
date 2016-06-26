@@ -1,5 +1,6 @@
 import vrep
 import time
+from manage_joints import *
 
 #para rodar, coloque na mesma pasta do vrep.
 #instrucoes em http://www.coppeliarobotics.com/helpFiles/en/remoteApiClientSide.htm
@@ -18,39 +19,62 @@ def reset_simulation(clientID):
     time.sleep(1) # um pequeno sleep entre o stop e o start
     vrep.simxStartSimulation(clientID, vrep.simx_opmode_oneshot)
 
+def simple():
+    # obtem os handlers. Um Handler eh um numero que identifica um componente, como, por exemplo, uma junta
+    res, nao = vrep.simxGetObjectHandle(clientID, "NAO", vrep.simx_opmode_blocking)
+    res, shL = vrep.simxGetObjectHandle(clientID, "LShoulderPitch3", vrep.simx_opmode_blocking)
+    res, shR = vrep.simxGetObjectHandle(clientID, "RShoulderPitch3", vrep.simx_opmode_blocking)
+    res, kneeR = vrep.simxGetObjectHandle(clientID, "RKneePitch3", vrep.simx_opmode_blocking)
+    res, kneeL = vrep.simxGetObjectHandle(clientID, "LKneePitch3", vrep.simx_opmode_blocking)
+    res, hipPitchL = vrep.simxGetObjectHandle(clientID, "LHipPitch3", vrep.simx_opmode_blocking)
+    res, hipPitchR = vrep.simxGetObjectHandle(clientID, "RHipPitch3", vrep.simx_opmode_blocking)
+    res, hipYawPitchL = vrep.simxGetObjectHandle(clientID, "LHipYawPitch3", vrep.simx_opmode_blocking)
+    res, hipYawPitchR = vrep.simxGetObjectHandle(clientID, "RHipYawPitch3", vrep.simx_opmode_blocking)
+    res, anklePitchL = vrep.simxGetObjectHandle(clientID, "LAnklePitch3", vrep.simx_opmode_blocking)
+    res, anklePitchR = vrep.simxGetObjectHandle(clientID, "RAnklePitch3", vrep.simx_opmode_blocking)
 
-# obtem os handlers. Um Handler eh um numero que identifica um componente, como, por exemplo, uma junta
-res, nao = vrep.simxGetObjectHandle(clientID, "NAO", vrep.simx_opmode_blocking)
-res, shL = vrep.simxGetObjectHandle(clientID, "LShoulderPitch3", vrep.simx_opmode_blocking)
-res, shR = vrep.simxGetObjectHandle(clientID, "RShoulderPitch3", vrep.simx_opmode_blocking)
-res, kneeR = vrep.simxGetObjectHandle(clientID, "RKneePitch3", vrep.simx_opmode_blocking)
-res, kneeL = vrep.simxGetObjectHandle(clientID, "LKneePitch3", vrep.simx_opmode_blocking)
-res, hipPitchL = vrep.simxGetObjectHandle(clientID, "LHipPitch3", vrep.simx_opmode_blocking)
-res, hipPitchR = vrep.simxGetObjectHandle(clientID, "RHipPitch3", vrep.simx_opmode_blocking)
-res, hipYawPitchL = vrep.simxGetObjectHandle(clientID, "LHipYawPitch3", vrep.simx_opmode_blocking)
-res, hipYawPitchR = vrep.simxGetObjectHandle(clientID, "RHipYawPitch3", vrep.simx_opmode_blocking)
-res, anklePitchL = vrep.simxGetObjectHandle(clientID, "LAnklePitch3", vrep.simx_opmode_blocking)
-res, anklePitchR = vrep.simxGetObjectHandle(clientID, "RAnklePitch3", vrep.simx_opmode_blocking)
+
+    while True:
+    	# Envia comandos para as juntas
+    	vrep.simxSetJointTargetPosition(clientID, kneeR, 1.2,vrep.simx_opmode_oneshot)
+    	vrep.simxSetJointTargetPosition(clientID, anklePitchR, 0.4,vrep.simx_opmode_oneshot)
+
+    	time.sleep(1)
+    	vrep.simxSetJointTargetPosition(clientID, hipYawPitchL, -0.3,vrep.simx_opmode_oneshot)
+
+    	vrep.simxSetJointTargetPosition(clientID, hipPitchR, -0.1,vrep.simx_opmode_oneshot)
+    	vrep.simxSetJointTargetPosition(clientID, hipYawPitchR, -0.3,vrep.simx_opmode_oneshot)
+    	vrep.simxSetJointTargetPosition(clientID, kneeR, -0.1,vrep.simx_opmode_oneshot)
+    	vrep.simxSetJointTargetPosition(clientID, anklePitchR, 0,vrep.simx_opmode_oneshot)
+
+    	print vrep.simxGetObjectPosition(clientID, nao, -1, vrep.simx_opmode_blocking)
+    	reset_simulation(clientID)
+
+    #time.sleep(3)
+    #vrep.simxSetJointTargetPosition(clientID, hipPitchL, -0.5,vrep.simx_opmode_oneshot)
+    #vrep.simxSetJointTargetPosition(clientID, kneeL, -0.5,vrep.simx_opmode_oneshot)
+    #vrep.simxSetJointTargetPosition(clientID, anklePitchL, 0.5,vrep.simx_opmode_oneshot)
 
 
+def startPosition():
+    Head_Yaw=[];Head_Pitch=[];
+    L_Hip_Yaw_Pitch=[];L_Hip_Roll=[];L_Hip_Pitch=[];L_Knee_Pitch=[];L_Ankle_Pitch=[];L_Ankle_Roll=[];
+    R_Hip_Yaw_Pitch=[];R_Hip_Roll=[];R_Hip_Pitch=[];R_Knee_Pitch=[];R_Ankle_Pitch=[];R_Ankle_Roll=[];
+    L_Shoulder_Pitch=[];L_Shoulder_Roll=[];L_Elbow_Yaw=[];L_Elbow_Roll=[];L_Wrist_Yaw=[]
+    R_Shoulder_Pitch=[];R_Shoulder_Roll=[];R_Elbow_Yaw=[];R_Elbow_Roll=[];R_Wrist_Yaw=[]
+    R_H=[];L_H=[];R_Hand=[];L_Hand=[];
+    Body = [Head_Yaw,Head_Pitch,L_Hip_Yaw_Pitch,L_Hip_Roll,L_Hip_Pitch,L_Knee_Pitch,L_Ankle_Pitch,L_Ankle_Roll,R_Hip_Yaw_Pitch,R_Hip_Roll,R_Hip_Pitch,R_Knee_Pitch,R_Ankle_Pitch,R_Ankle_Roll,L_Shoulder_Pitch,L_Shoulder_Roll,L_Elbow_Yaw,L_Elbow_Roll,L_Wrist_Yaw,R_Shoulder_Pitch,R_Shoulder_Roll,R_Elbow_Yaw,R_Elbow_Roll,R_Wrist_Yaw,L_H,L_Hand,R_H,R_Hand]
 
-while True:
-	# Envia comandos para as juntas
-	vrep.simxSetJointTargetPosition(clientID, kneeR, 1.2,vrep.simx_opmode_oneshot)
-	vrep.simxSetJointTargetPosition(clientID, anklePitchR, 0.4,vrep.simx_opmode_oneshot)
+    get_all_handles(3, clientID,Body)
 
-	time.sleep(1)
-	vrep.simxSetJointTargetPosition(clientID, hipYawPitchL, -0.3,vrep.simx_opmode_oneshot)
+    f = file('start_moviment_ga.txt')
 
-	vrep.simxSetJointTargetPosition(clientID, hipPitchR, -0.1,vrep.simx_opmode_oneshot)
-	vrep.simxSetJointTargetPosition(clientID, hipYawPitchR, -0.3,vrep.simx_opmode_oneshot)
-	vrep.simxSetJointTargetPosition(clientID, kneeR, -0.1,vrep.simx_opmode_oneshot)
-	vrep.simxSetJointTargetPosition(clientID, anklePitchR, 0,vrep.simx_opmode_oneshot)
+    startMoves = []
+    for line in f:
+        split_line = line.split(' ')
+        startMoves += [[float(x) for x in split_line[1:]]]
+    for move in startMoves:
+        JointControl(clientID, 0, Body, move)
+        time.sleep(0.1)
 
-	print vrep.simxGetObjectPosition(clientID, nao, -1, vrep.simx_opmode_blocking)
-	reset_simulation(clientID)
-
-#time.sleep(3)
-#vrep.simxSetJointTargetPosition(clientID, hipPitchL, -0.5,vrep.simx_opmode_oneshot)
-#vrep.simxSetJointTargetPosition(clientID, kneeL, -0.5,vrep.simx_opmode_oneshot)
-#vrep.simxSetJointTargetPosition(clientID, anklePitchL, 0.5,vrep.simx_opmode_oneshot)
+startPosition()
