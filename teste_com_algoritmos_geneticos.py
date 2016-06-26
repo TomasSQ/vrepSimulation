@@ -136,6 +136,7 @@ def main():
         print("  Max %s" % max(fits))
         print("  Avg %s" % mean)
         print("  Std %s" % std)
+        #TODO escrever melhor cromossomo print tools.selBest(pop, k=1)
 
         pop[:] = offspring
 
