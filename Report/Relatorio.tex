@@ -88,7 +88,7 @@ Uma das abordagens analíticas mais comuns de se resolver o sistema é considera
 
 Ponto de momento zero (ZMP - Zero Moment Point) é um dos métodos utilizados para resolver o problema considerando o centro de massa. Ele consiste, basicamente, em encontrar o ponto em que o movimento gera momento horizontal zero no centro de massa, ou seja, um equilíbrio, uma estabilidade dinâmica, visto que caminhar uma órbita periódica com uma fase estável alternada com um instável.
 
-Não importa qual for a abordagem utilizando modelos matemáticos e física, até o momento todas elas tem algo nível de complexidade de resolução e computação, e muitas vezes as soluções tem difícil adaptação para outros robôs.
+Não importa qual for a abordagem utilizando modelos matemáticos e física, até o momento todas elas tem algo nível de complexidade de resolução e computação, e muitas vezes as soluções tem difícil adaptação para outros robôs. Está é uma das maiores motivações de utilizar técnicas de IA, pois nós, seres humanos, não precisamos de todos estes conhecimentos, obviamente, para conseguir andar. Pode-se dizer que nós aprendemos a caminhar por conta de nossa evolução, por aprendizado por reforço quando pequenos, e com nossas redes neurais, então vamos explorar as abordagens de IA relacionadas a isso individualmente buscando simplificar este processo de ter de descobrir e resolver inúmeras equações complexas.
 
 \section{Aprendizagem Supervisionada} \label{aprendizagem_supervisionada}
 
@@ -226,14 +226,19 @@ Tentamos melhorar o resultado treinando a rede neural 2 com um \textsl{dataset} 
 
 \section{Aprendizagem Por Reforço} \label{aprendizagem_por_reforco}
 
-Pode-se dizer que crianças tem aprendizagem por reforço quando estão desenvolvendo suas atividades motoras. Uma época da vida do ser humano em que ele não sabe exatamente o que busca, porém já consegue distinguir o que é melhor ou não de se fazer para se alcançar um objetivo muitas vezes.
+Pode-se dizer que crianças fazem uso de aprendizagem por reforço quando estão desenvolvendo suas atividades motoras. Uma época da vida do ser humano em que ele não sabe exatamente o que busca, porém já consegue distinguir o que é melhor ou não de se fazer para se alcançar um objetivo muitas vezes, e com inúmeras tentativas, erros e acertos consegue. Exploramos este conceito utilizando o framework em python FRAMEWORKPYTHON para modelar tal problema, e verificar se esta técnica é eficaz ou não.
+
+O primeiro desafio encontrado para utilizar esta abordagem foi modelar o problema em termos de aprendizagem por reforço. Como temos muitas variáveis (26 articulações que devem se movimentar para fazê-lo andar), cada qual podendo assumir valores contínuos em intervalos diferentes, faz-se necessário simplificar o problema. Então a maneira que modelamos foi COLOCARCOMOMODELAMOS.
+
+Quanto ao que devemos considerar como bom ou ruim para reforçar ou não é mais fácil de se imaginar, então adotamos que quando o robô consegue OQUEELECONSEGUE obtem um REFORCO. Dessa forma, estamos reforçando bons comportamentos do robô no que se diz respeito a conseguir caminhar.
 
 \section{Algoritmos Genéticos} \label{algoritmos_geneticos}
+
 Dada a proximidade que os algoritmos genéticos buscam ter com a natureza, e que os seres humanos são frutos de inúmeras evoluções de populações distintas de animais, parece natural avançar no problema de andar utilizando esta técnica da inteligência artificial. Nela buscamos encontrar, depois de várias gerações, um robô capaz de andar, sem cair, indeterminadamente.
 
 Para isso acontecer, antes de definir tamanho ideal para população, taxa de mutação, pontos de crossover, é necessário formular uma boa função fitness, e codificar um bom cromossomo.
 
-Cada indivíduo (cromossomo) da população é um vetor com $(2N+2)J$ posições, onde $J$ é o número de juntas em que queremos otimizar suas rotações em função do tempo, o número $(2N+2)$ se dá por ser o número de constantes estipuladas em cada função de rotação em função do tempo, e $N$ o número de termos da função $f(t) = \frac{a_0}{2}+\sum_{i=0}^N a_{2i+2} cos(a_{1} t) + a_{2i+3} sen(a_{1} t)$, onde $a_i$ é a i-nésima constante do indivíduo. Tal função é uma série de Fourier truncada, boa para representar funções perióticas e fazer, portanto, cada articulação poder ser utilizada de forma independente em perídos diferentes serapadas das demais.
+Cada indivíduo (cromossomo) da população é um vetor com $(2N+2)J$ posições, onde $J$ é o número de juntas em que queremos otimizar suas rotações em função do tempo, o número $(2N+2)$ se dá por ser o número de constantes estipuladas em cada função de rotação em função do tempo, e $N$ o número de termos da função $f(t) = \frac{a_0}{2}+\sum_{i=0}^N a_{2i+2} cos(a_{1} t) + a_{2i+3} sen(a_{1} t)$, onde $a_i$ é a i-nésima constante do indivíduo. Tal função é uma série de Fourier truncada, boa para representar funções perióticas e fazer, portanto, cada articulação poder ser utilizada de forma independente em perídos diferentes serapadas das demais. Novamente escolhemos as articulações como alvo do aprendizado, pois, novamente, são elas que definem se o robô irá andar ou não.
 
 A função fitness inicial que utilizamos foi bem simples: distância percorrida até o robô cair, sendo que cair é: centro de massa do robô ter girado mais de 90º em qualquer eixo, e parar de se deslocar por alguns instantes. Para isso, para cada indivíduo da população, executou-se uma simulação, utilizando os valores decodificados de seu cromossomo como as constantes da função de rotação citada. A cada intervalo de 0.01s todas as articulações tem seus angulos atualizados de acordo com sua respectiva função, e é verificado se o robo andou, caiu, ficou parado.
 
@@ -242,6 +247,10 @@ Nossos testes mostraram que depois de 10 gerações, todos os indivíduos pratic
 Então melhoramos a função fitness, colocando alguns cálculos a mais que indicam fazem uma caminhada algo melhor do que simplesmente cair. A ideia é reforçar movimentos que indicam que está caminhando com cabeça erguida, penalizando quedas ou ir, de alguma forma, para trás. Com esta função fitness melhorada, os resultados também foram melhores, mas ainda sim estavam longes de serem os desejados. O robô aprendeu a cair "lentamente" e para frente, o que, segundo a função fitness, dá um resultado melhor do que ficar parado, ou caior para os lados, e no chão até chega a dobrar as pernas, porém não adianta mais.
 
 \section{Conclusões} \label{conclusoes}
+
+Conclui-se que o problema de fazer um robô bípede é realmente complexa como esperávamos, e simular a natureza com estas técnias pode ser sim eficiente.
+
+Após realizar as três abordagens, notamos em todas elas a necessidade de colocar o robô em uma posição inicial propícia para caminhar, e então executar as respectivas técnicas. Isso é algo aceitável, pois com o robô físico, pode-se colocá-lo nesta posição facilmente (joelhos e cotovelhos levemente flexionados, coluna levemente inclinada, braços para baixo), e no simulador, conseguimos deixá-lo assim com apenas 7 comandos de rotações nas devidas articulações. O ponto de partida foi fundamental para a abordagem de RNA, e ajudou bastante a de AG descobrir as devidas constantes da série de fourier truncada para cada junta mais rapidamente.
 
 %******************************************************************************
 % Referências - Definidas no arquivo Relatorio.bib
