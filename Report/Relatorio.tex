@@ -242,11 +242,17 @@ Definimos que cada série de Fourier truncada teria 5 termos $seno$ e 5 $cosseno
 
 Com algumas gerações a mais, ele conseguiu dar um passo e cair, ou coisas semelhantes. Porém paralelamente a esta função fitness, fizemos outro teste, com uma abordagem mais simples, permitindo o NAO fazer até dois movimentos. Neste cenário, ele conseguiu andar não de maneira ótima, pois o movimento que a evolução gerou foi: mover uma perna perna para frente, e depois para trás, resultando em ele sair do lugar, sem cair, por tempo indeterminado.
 
+Importante ressaltar que antes de cada execução de simulação do robô para obter o fator fitness do indivíduo, deixávamos o NAO pronto para caminhar, executando 7 comandos de rotação para cada uma de suas articulações, resultando em ele flexionar levemente os joelhos e cotovelos, abaixar os braços e o tronco. Isso foi feito pois esta posição é mais estável, e aceita mais movimentos do que a inicial padrão do simulador, onde seus joelhos, cotovelos estão estendidos ao máximo.
+
+%TODO imagem do robo assim q começa a simulação e imagem dele pronto para caminhar
+
+Como não obtivemos pleno sucesso com esta abordagem, e percebemos que, de certa forma, o que queríamos que o AG descobrisse era as funções de rotação as quais sabíamos suas respectivas imagens conforme já descrito anteriormente (pois utilizamos tais valores para treinar a rede neural), fizemos testes com AG sem o simulador para tentar aproximar com séries de Fourier tais funções.
+
 \section{Conclusões} \label{conclusoes}
 
-Conclui-se que o problema de fazer um robô bípede é realmente complexa como esperávamos, e simular a natureza com estas técnias pode ser sim eficiente.
+Após realizar as duas abordagens, notamos em todas elas a necessidade de colocar o robô em uma posição inicial propícia para caminhar, e então executar as respectivas técnicas. Isso é algo aceitável, pois com o robô físico, pode-se colocá-lo nesta posição facilmente (joelhos e cotovelhos levemente flexionados, coluna levemente inclinada, braços para baixo), e no simulador, conseguimos deixá-lo assim com apenas 7 comandos de rotações nas devidas articulações. O ponto de partida foi fundamental para a abordagem de RNA, e ajudou bastante a de AG descobrir as devidas constantes da série de fourier truncada para cada junta mais rapidamente (apesar de mesmo assim não encontrar as ótimas).
 
-Após realizar as três abordagens, notamos em todas elas a necessidade de colocar o robô em uma posição inicial propícia para caminhar, e então executar as respectivas técnicas. Isso é algo aceitável, pois com o robô físico, pode-se colocá-lo nesta posição facilmente (joelhos e cotovelhos levemente flexionados, coluna levemente inclinada, braços para baixo), e no simulador, conseguimos deixá-lo assim com apenas 7 comandos de rotações nas devidas articulações. O ponto de partida foi fundamental para a abordagem de RNA, e ajudou bastante a de AG descobrir as devidas constantes da série de fourier truncada para cada junta mais rapidamente.
+Conclui-se que o problema de fazer um robô bípede é realmente complexo como esperávamos, e simular a natureza com estas técnias pode ser sim eficiente.
 
 %******************************************************************************
 % Referências - Definidas no arquivo Relatorio.bib
