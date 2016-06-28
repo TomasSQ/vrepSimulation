@@ -118,7 +118,6 @@ def walk():
             move = []
             for aproximation in aproximations:
                 move += [aproximation[t]]
-            print t
             JointControl(clientID, 0, Body, move)
             time.sleep(0.007)
 
