@@ -50,12 +50,12 @@
 %%*****************************************************************************
 % Resumo do trabalho
 \begin{abstract}
-O objetivo deste trabalho é mostrar diferentes abordagens de inteligência articial (IA) para fazer um robo bípede (NAO) andar utilizando o simulador VREP. Fez-se uso de redes neurais artificiais (RNA), aprendizado por reforço e algortimo genéticos. Estudaremos os prós e contras de cada técnica, e exibr dos resultados obtidos.
+O objetivo deste trabalho é mostrar diferentes abordagens de inteligência articial (IA) para fazer um robo bípede (NAO) andar utilizando o simulador VREP. Fez-se uso de redes neurais artificiais (RNA) e algortimo genéticos. Estudaremos os prós e contras de cada técnica, e exibr dos resultados obtidos, além de expor possíveis trabalhos futuros.
 \end{abstract}
 
 % Indique três palavras-chave que descrevem o trabalho
 \begin{IEEEkeywords}
- Robótica, NAO, VREP, aprendizado por reforço, aprendizado supervisionado, algoritmo genético
+ Robótica, NAO, VREP, aprendizado supervisionado, algoritmo genético
 \end{IEEEkeywords}
 
 %%*****************************************************************************
@@ -77,7 +77,7 @@ Neste trabalho, desenvolvemos diferentes modelos e implementações para o probl
 
 O resto do trabalho está dividido da seguinte maneira: na seção \ref{dificuldades} trataremos das dificuldades do problema de locomoção bípede, mostraremos as soluções e modelos normalmente adotados para resolvê-lo e também mostraremos brevemente o estado-da-arte para o robô NAO.
 
- Na seção \ref{aprendizagem_supervisionada} trataremos do modelo que implementamos baseado em aprendizagem supervisionada e redes-neurais artificiais, mostraremos os resultados e evolução ao longo do tempo, além de também destacar os problemas e limitações dessa abordagem. Na seção \ref{aprendizagem_por_reforco}, mostraremos o modelo que montamos usando a técnica de aprendizagem por reforço, seus resultados e dificuldades. Faremos o mesmo das seções anteriores para a seção \ref{algoritmos_geneticos}. Por fim, daremos um panôrama do problema e dos modelos que usamos nesse trabalho, também discutiremos os resultados que obtemos e propôremos soluções para trabalhos futuros nesse tema na seção \ref{conclusoes}.
+ Na seção \ref{aprendizagem_supervisionada} trataremos do modelo que implementamos baseado em aprendizagem supervisionada e redes-neurais artificiais, mostraremos os resultados e evolução ao longo do tempo, além de também destacar os problemas e limitações dessa abordagem. Na seção \ref{algoritmos_geneticos}, mostraremos o modelo que montamos usando a técnica de algoritmos genéticos, seus resultados e dificuldades. Por fim, daremos um panôrama do problema e dos modelos que usamos nesse trabalho, também discutiremos os resultados que obtemos e propôremos soluções para trabalhos futuros nesse tema na seção \ref{conclusoes}.
 
 \section{Dificuldades do Problema} \label{dificuldades}
 A habilidade de caminhar é algo tão automático para seres humanos quanto complexo. Sob um primeiro olhar, pode parecer simplesmente um movimento de pernas coordenados, porém, ao observar mais minunsiosamente, percebe-se que vai muito além disso, até porque, apenas para realizar tal movimento de pernas precisa-se fazer uso do quadril, joelho, tornozelo e pés, rotacionando-os cada um em uma maneira específica em mais de um eixo. Nota-se também que para caminhadas mais rápidas, é necessário também mexer a coluna, ombros, cotovelos, pulso, etc. e que para qualquer caminhada, utilizar de tais partes também é fundamental para manter o equilíbrio, mesmo que suavemente.
@@ -223,14 +223,6 @@ Virou consenso entre nós que o principal motivo desse comportamento se deve a c
 
 Tentamos melhorar o resultado treinando a rede neural 2 com um \textsl{dataset} menor, com somente os movimentos iniciais. Fizemos isso por 100 épocas, porém não conseguimos melhorar o erro da rede. Esse resultado mostra que a rede está bem encaixada para o problema, sendo díficil mexer nos seus pesos sem prejudicar o valor do erro. Para trabalhos futuros sugerimos um estudo mais a fundo da possibilidade de retreinar a rede com esse dataset limitado, provavelmente adicionando um distúrbio nela ou um mecanismo de \textsl{weight decay}\cite{hastie01statisticallearning}.
 
-
-\section{Aprendizagem Por Reforço} \label{aprendizagem_por_reforco}
-
-Pode-se dizer que crianças fazem uso de aprendizagem por reforço quando estão desenvolvendo suas atividades motoras. Uma época da vida do ser humano em que ele não sabe exatamente o que busca, porém já consegue distinguir o que é melhor ou não de se fazer para se alcançar um objetivo muitas vezes, e com inúmeras tentativas, erros e acertos consegue. Exploramos este conceito utilizando o framework em python FRAMEWORKPYTHON para modelar tal problema, e verificar se esta técnica é eficaz ou não.
-
-O primeiro desafio encontrado para utilizar esta abordagem foi modelar o problema em termos de aprendizagem por reforço. Como temos muitas variáveis (26 articulações que devem se movimentar para fazê-lo andar), cada qual podendo assumir valores contínuos em intervalos diferentes, faz-se necessário simplificar o problema. Então a maneira que modelamos foi COLOCARCOMOMODELAMOS.
-
-Quanto ao que devemos considerar como bom ou ruim para reforçar ou não é mais fácil de se imaginar, então adotamos que quando o robô consegue OQUEELECONSEGUE obtem um REFORCO. Dessa forma, estamos reforçando bons comportamentos do robô no que se diz respeito a conseguir caminhar.
 
 \section{Algoritmos Genéticos} \label{algoritmos_geneticos}
 
