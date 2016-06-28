@@ -13,7 +13,7 @@ DEFAULT_FILE = ["training_data.txt"]
 
 # Parser dos comandos
 parser = argparse.ArgumentParser(description='Movimenta o robo de acordo com os dados de duas redes neurais')
-parser.add_argument('--file', '-F', nargs = 2, default = DEFAULT_FILE,
+parser.add_argument('--file', '-F', nargs = 1, default = DEFAULT_FILE,
                     help='Arquivo com os movimentos para o robo executar')
 parser.add_argument('--host', '-H', nargs = 1, default = DEFAULT_VREP_HOST,
                     help='Host VREP')
