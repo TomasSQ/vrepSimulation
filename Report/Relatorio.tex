@@ -202,16 +202,33 @@ Para aplicar a rede neural no robô fizemos uma função que lê a posição de 
 
 Como era de se esperar olhando a convergência da rede, quando aplicamos a melhor rede neural  da tabela \ref{redes_neurais_tabela_1} obtivemos um resultado ruim, o robô simplemente desequilibrou.
 
-Tentamos então utilizar a rede neural treinada por 600 épocas com o \textsl{dataset} de $2999$. O resultado também não foi bom. O robô tentava dar o primeiro passo e sair da posição inicial, porém se desequilibrava e caía. Há, contudo, uma observação interessante a ser feita: mesmo no chão o robô movia as pernas num movimento semelhante a andar, como é possível ver na sequência de imagens %TODO%.
+Tentamos então utilizar a rede neural treinada por 600 épocas com o \textsl{dataset} de $2999$. O resultado também não foi bom. O robô tentava dar o primeiro passo e sair da posição inicial, porém se desequilibrava e caía. Há, contudo, uma observação interessante a ser feita: mesmo no chão o robô movia as pernas num movimento semelhante a andar, como é possível ver na sequência de imagens \ref{fig:walk_rna_1}.
 
-%TODO colocar imagens.
+\begin{figure}[H]
+ \centering
+ \includegraphics[scale=0.45]{figuras/{Galeria-movimentos_rede_neural_2999_movimentos.mov-2}.jpg}
+ \caption{Robô caindo e "andando" no chão.}
+ \label{fig:walk_rna_1}
+\end{figure}
 
 
-Por último, testamos a rede neural treinada com $500$ exemplos de movimentação. Essa rede neural foi a mais promissora até o momento: o robô conseguiu sair da posição inicial, ficar em equilibrío e chegar perto de dar os primeiros passos. Porém após alguns movimentos o robô simplesmente ficava parado numa posição similar ao momento de impulso para o proximo passo, conforme mostram as figuras %TODO %.
+Por último, testamos a rede neural treinada com $500$ exemplos de movimentação. Essa rede neural foi a mais promissora até o momento: o robô conseguiu sair da posição inicial, ficar em equilibrío e chegar perto de dar os primeiros passos. Porém após alguns movimentos o robô simplesmente ficava parado numa posição similar ao momento de impulso para o proximo passo, conforme mostram a figura \ref{fig:walk_rna_2}.
 
-%TODO colocar imagens.
+\begin{figure}[H]
+ \centering
+ \includegraphics[scale=0.45]{figuras/{Galeria-movimentos_rede_neural_500_movimentos.mov-2}.jpg}
+ \caption{Robô começando a andar e depois parado.}
+ \label{fig:walk_rna_2}
+\end{figure}
 
-Ao obsevarmos os comportamentos decidimos testar uma abordagem mista, ou seja, fazer os primeiros movimentos do robô com a rede neural treinada com menos exemplos e depois continuar os movimentos usando a segunda rede neural testada. O resultado disso foi que, finalmente, conseguimos replicar, ainda que de forma não tão precisa, os movimentos de andar que a biblioteca do NAOqi implementa. Esses movimentos podem ser vistos na figura %TODO %.
+Ao obsevarmos os comportamentos decidimos testar uma abordagem mista, ou seja, fazer os primeiros movimentos do robô com a rede neural treinada com menos exemplos e depois continuar os movimentos usando a segunda rede neural testada. O resultado disso foi que, finalmente, conseguimos replicar, ainda que de forma não tão precisa, os movimentos de andar que a biblioteca do NAOqi implementa. Esses movimentos podem ser vistos na figura \ref{fig:walk_rna_3}.
+
+\begin{figure}[H]
+ \centering
+ \includegraphics[scale=0.45]{figuras/{Galeria-movimentos_as_duas_redes_neurais.mov-1}.jpg}
+ \caption{Robô andando em círculos.}
+ \label{fig:walk_rna_3}
+\end{figure}
 
 \subsection{Interpretação dos Testes e dos Resultados Obtidos}
 
