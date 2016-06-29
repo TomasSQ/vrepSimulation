@@ -206,7 +206,7 @@ Tentamos então utilizar a rede neural treinada por 600 épocas com o \textsl{da
 
 \begin{figure}[H]
  \centering
- \includegraphics[scale=0.45]{figuras/{Galeria-movimentos_rede_neural_2999_movimentos.mov-2}.jpg}
+ \includegraphics[scale=0.33]{figuras/{Galeria-movimentos_rede_neural_2999_movimentos.mov-2}.jpg}
  \caption{Robô caindo e "andando" no chão.}
  \label{fig:walk_rna_1}
 \end{figure}
@@ -216,7 +216,7 @@ Por último, testamos a rede neural treinada com $500$ exemplos de movimentaçã
 
 \begin{figure}[H]
  \centering
- \includegraphics[scale=0.45]{figuras/{Galeria-movimentos_rede_neural_500_movimentos.mov-2}.jpg}
+ \includegraphics[scale=0.33]{figuras/{Galeria-movimentos_rede_neural_500_movimentos.mov-2}.jpg}
  \caption{Robô começando a andar e depois parado.}
  \label{fig:walk_rna_2}
 \end{figure}
@@ -225,7 +225,7 @@ Ao obsevarmos os comportamentos decidimos testar uma abordagem mista, ou seja, f
 
 \begin{figure}[H]
  \centering
- \includegraphics[scale=0.45]{figuras/{Galeria-movimentos_as_duas_redes_neurais.mov-1}.jpg}
+ \includegraphics[scale=0.33]{figuras/{Galeria-movimentos_as_duas_redes_neurais.mov-1}.jpg}
  \caption{Robô andando em círculos.}
  \label{fig:walk_rna_3}
 \end{figure}
@@ -261,7 +261,7 @@ Com algumas gerações a mais, ele conseguiu dar um passo e cair, ou coisas seme
 
 \begin{figure}[H]
  \centering
- \includegraphics[scale=0.45]{figuras/{Galeria-ga_04.mp4-1}.jpg}
+ \includegraphics[scale=0.33]{figuras/{Galeria-ga_04.mp4-1}.jpg}
  \caption{Robô andando utilizando dois movimentos aprendidos com algoritmos genéticos.}
  \label{fig:walk_ga}
 \end{figure}
@@ -316,7 +316,7 @@ Por outro lado, utilizando método dos mínimos quadrados para aproximar a funç
 
 \begin{figure}[H]
  \centering
- \includegraphics[scale=0.45]{figuras/{Galeria-150polynomialfit.mp4-1}.jpg}
+ \includegraphics[scale=0.33]{figuras/{Galeria-150polynomialfit.mp4-1}.jpg}
  \caption{Robô andando utilizando funções aproximadas por um polinomio de grau 150 com método dos mínimos quadrados.}
  \label{fig:poly_walk}
 \end{figure}
@@ -327,7 +327,7 @@ Trabalhos futuros utilizando AG devem fazer uso de métodos mais precisos do que
 
 Após realizar as duas abordagens, notamos em todas elas a necessidade de colocar o robô em uma posição inicial propícia para caminhar, e então executar as respectivas técnicas. Isso é algo aceitável, pois com o robô físico, pode-se colocá-lo nesta posição facilmente (joelhos e cotovelhos levemente flexionados, coluna levemente inclinada, braços para baixo), e no simulador, conseguimos deixá-lo assim com apenas 7 comandos de rotações nas devidas articulações. O ponto de partida foi fundamental para a abordagem de RNA, e ajudou bastante a de AG descobrir as devidas constantes da série de fourier truncada para cada junta mais rapidamente (apesar de mesmo assim não encontrar as ótimas).
 
-Conclui-se que o problema de fazer um robô bípede é realmente complexo como esperávamos, e simular a natureza com estas técnias pode ser sim eficiente.
+Conclui-se que o problema de fazer um robô bípede é realmente complexo como esperávamos, e simular a natureza com estas técnias pode ser sim eficiente. Em trabalhos futuros deve-se combinar tais técnicas, para verificar se obtem-se dados melhores. Utilizar outros tipos de redes neurais, como osciladores neurais e outras técnicas \cite{cpgs} mostrou ter bons resultados, e podem ser incorporados a abordagem deste trabalho. Algo a também ser explorado é o uso de aprendizado por reforço em substituição ou adição ao aprendizado supervisionado, utilizando mais de uma rede neural treinada em momentos diferentes.
 
 %******************************************************************************
 % Referências - Definidas no arquivo Relatorio.bib
