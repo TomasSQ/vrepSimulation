@@ -134,17 +134,17 @@ for function in functions[2:]:
     plt.plot(x, function)
 
     print "Aproximation"
-    coeficients = aproximate(function)
-    print coeficients
-    aproximation = []
-    for t in xrange(len(function)):
-        aproximation += [truncated_Fourier(coeficients, t * INTERVAL)]
-
-    plt.plot(x, np.array(aproximation) / 4)
-    #p = np.poly1d(np.polyfit(x, function, 150))
+    #coeficients = aproximate(function)
+    #print coeficients
     #aproximation = []
     #for t in xrange(len(function)):
-    #    aproximation += [p(t * INTERVAL)]
-    #plt.plot(x, aproximation)
+    #    aproximation += [truncated_Fourier(coeficients, t * INTERVAL)]
+
+    #plt.plot(x, np.array(aproximation) / 4)
+    p = np.poly1d(np.polyfit(x, function, 150))
+    aproximation = []
+    for t in xrange(len(function)):
+        aproximation += [p(t * INTERVAL)]
+    plt.plot(x, aproximation)
 
     plt.show()

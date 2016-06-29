@@ -274,6 +274,29 @@ Como não obtivemos pleno sucesso com esta abordagem, e percebemos que, de certa
  \label{fig:ga_approximation_02}
 \end{figure}
 
+Por outro lado, utilizando método dos mínimos quadrados para aproximar a função de rotações com um polinômio de alto grau se bomostrou bem eficaz, conforme mostra as Figuras \ref{fig:poly_approximation_01} e \ref{fig:poly_approximation_02}, onde o erro é praticamente nulo. Então, testamos utilzar tais funções aproximadas para fazer o robo andar, e obtivemos bons resultados, ele finalmente andou, porém vagaromente (Figura \ref{fig:poly_walk}).
+
+\begin{figure}[H]
+ \centering
+ \includegraphics[scale=0.33]{figuras/{poly_approximation_01}.png}
+ \caption{Aproximação da mesma função por um polinômio de grau 150, com método dos mínimos quadrados. Em verde aproximação, em azul o esperado}
+ \label{fig:poly_approximation_01}
+\end{figure}
+
+\begin{figure}[H]
+ \centering
+ \includegraphics[scale=0.33]{figuras/{poly_approximation_02}.png}
+ \caption{Aproximação da mesma função por um polinômio de grau 150, com método dos mínimos quadrados. Em verde aproximação, em azul o esperado}
+ \label{fig:poly_approximation_02}
+\end{figure}
+
+\begin{figure}[H]
+ \centering
+ \includegraphics[scale=0.45]{figuras/{Galeria-150polynomialfit.mp4-1}.jpg}
+ \caption{Robô andando utilizando funções aproximadas por um polinomio de grau 150 com método dos mínimos quadrados.}
+ \label{fig:poly_walk}
+\end{figure}
+
 Trabalhos futuros utilizando AG devem fazer uso de métodos mais precisos do que os aqui presentes, ou tentar outras abordagens de algoritmos genéticos, como PSO (Particle Swarm Optimization) ou BRKGA (Biased random-key Genetic Algorithms), ou fazer uso de métodos analíticos juntos com AG, ou representando os indivíduos de forma diferente.
 
 \section{Conclusões} \label{conclusoes}
