@@ -50,7 +50,7 @@
 %%*****************************************************************************
 % Resumo do trabalho
 \begin{abstract}
-O objetivo deste trabalho é mostrar diferentes abordagens de inteligência articial (IA) para fazer um robô bípede (NAO) andar utilizando o simulador VREP. Fez-se uso de redes neurais artificiais (RNA) e algortimo genéticos. Estudaremos os prós e contras de cada técnica, e exibr dos resultados obtidos, além de expor possíveis trabalhos futuros.
+O objetivo deste trabalho é mostrar diferentes abordagens de inteligência articial (IA) para fazer um robô bípede (NAO) andar utilizando o simulador VREP. Fez-se uso de redes neurais artificiais (RNA) e algoritmos genéticos. Estudaremos os prós e contras de cada técnica, e exibir alguns dos resultados obtidos, além de expor possíveis trabalhos futuros.
 \end{abstract}
 
 % Indique três palavras-chave que descrevem o trabalho
@@ -63,9 +63,9 @@ O objetivo deste trabalho é mostrar diferentes abordagens de inteligência arti
 
 \section{Introdução}
 
-Uma das coisas mais excepcionais da natureza é a capacidade de andar com somente dois apoios. A dificuldade desse método é tão alta que pouquissímos animais conseguiram evoluir para atingir isso, sendo o ser-humano, obviamente, um bom exemplo de tal habilidade. Apesar da dificuldade, há diversas vantagens nesse tipo de movimento, como, por exemplo, a economia de energia, a capacidade de atingir distâncias maiores, além de, no caso dos humanos, amplicar a capacidade de visão.
+Uma das coisas mais excepcionais da natureza é a capacidade de andar com somente dois apoios. A dificuldade desse método é tão alta que pouquissímos animais conseguiram evoluir para atingir isso, sendo o ser humano, obviamente, um bom exemplo de tal habilidade. Apesar da dificuldade, há diversas vantagens nesse tipo de movimento, como, por exemplo, a economia de energia, a capacidade de atingir distâncias maiores, além de, no caso dos humanos, ampliar a capacidade de visão.
 
-Em robótica, há muito deseja-se conseguir que robôs bipedes andem de forma autônoma, eficiente e resiliente. Porém o desafio é imenso e ainda não foi totalmente resolvido. Sendo assim, estudaremos este campo buscando fugir das abordagens tradicionais, baseadas em modelos precisos e métodos matemáticos e físicos, para explorar a métodos baseados em inteligência artificial (IA).
+Em robótica, há muito deseja-se conseguir que robôs bípedes andem de forma autônoma, eficiente e resiliente. Porém, o desafio é imenso e ainda não foi totalmente resolvido. Sendo assim, estudaremos este campo buscando fugir das abordagens tradicionais, baseadas em modelos precisos e métodos matemáticos e físicos, para explorar a métodos baseados em inteligência artificial (IA).
 Neste trabalho, desenvolvemos diferentes modelos e implementações para o problema de locomoção bípede num robô NAO (Figura \ref{fig:fig1}).  Para testar, usaremos o simulador de robótica \textsl{VREP}, disponibilizado pela empresa Coppelia Robotics GmbH.
 
 \begin{figure}[H]
@@ -77,32 +77,32 @@ Neste trabalho, desenvolvemos diferentes modelos e implementações para o probl
 
 O resto do trabalho está dividido da seguinte maneira: na seção \ref{dificuldades} trataremos das dificuldades do problema de locomoção bípede, mostraremos as soluções e modelos normalmente adotados para resolvê-lo e também mostraremos brevemente o estado-da-arte para o robô NAO.
 
- Na seção \ref{aprendizagem_supervisionada} trataremos do modelo que implementamos baseado em aprendizagem supervisionada e redes-neurais artificiais, mostraremos os resultados e evolução ao longo do tempo, além de também destacar os problemas e limitações dessa abordagem. Na seção \ref{algoritmos_geneticos}, mostraremos o modelo que montamos usando a técnica de algoritmos genéticos, seus resultados e dificuldades. Por fim, daremos um panôrama do problema e dos modelos que usamos nesse trabalho, também discutiremos os resultados que obtemos e propôremos soluções para trabalhos futuros nesse tema na seção \ref{conclusoes}.
+Na seção \ref{aprendizagem_supervisionada} trataremos do modelo que implementamos baseado em aprendizagem supervisionada e redes-neurais artificiais, mostraremos os resultados e evolução ao longo do tempo, além de também destacar os problemas e limitações dessa abordagem. Na seção \ref{algoritmos_geneticos}, mostraremos o modelo que montamos usando a técnica de algoritmos genéticos, seus resultados e dificuldades. Por fim, daremos um panorama do problema e dos modelos que usamos nesse trabalho, também discutiremos os resultados que obtemos e proporemos soluções para trabalhos futuros nesse tema na seção \ref{conclusoes}.
 
 \section{Dificuldades do Problema} \label{dificuldades}
-A habilidade de caminhar é algo tão automático para seres humanos quanto complexo. Sob um primeiro olhar, pode parecer simplesmente um movimento de pernas coordenados, porém, ao observar mais minunsiosamente, percebe-se que vai muito além disso, até porque, apenas para realizar tal movimento de pernas precisa-se fazer uso do quadril, joelho, tornozelo e pés, rotacionando-os cada um em uma maneira específica em mais de um eixo. Nota-se também que para caminhadas mais rápidas, é necessário também mexer a coluna, ombros, cotovelos, pulso, etc. e que para qualquer caminhada, utilizar de tais partes também é fundamental para manter o equilíbrio, mesmo que suavemente.
+A habilidade de caminhar é algo tão automático para seres humanos quanto complexo. Sob um primeiro olhar, pode parecer simplesmente um movimento de pernas coordenados, porém, ao observar mais minuciosamente, percebe-se que vai muito além disso, até porque, apenas para realizar tal movimento de pernas precisa-se fazer uso do quadril, joelho, tornozelo e pés, rotacionando-os cada um em uma maneira específica em mais de um eixo. Nota-se também que para caminhadas mais rápidas, é necessário também mexer a coluna, ombros, cotovelos, pulso, etc. e que para qualquer caminhada, utilizar de tais partes também é fundamental para manter o equilíbrio, mesmo que suavemente.
 
-O problema de andar então trata-se de realizar uma combinação em função do tempo de qual ângulo qual parte deve assumir para que seja possível sair do lugar. Enumerando rapidamente, observa-se que necessita-se saber, para cada intervalo de tempo, o ângulo do pé, tornozelo, joelho, quadril, coluna, ombros, cotovelo, pulsos, pescoço, ao longo do eixo x, y e z, totalizando em 48 incógnitas que se influenciam. É óbvio então que trata-se de um sistema complexo, sem soluções triviais, que por sua vez é estudado há vários anos.
+O problema de andar então trata-se de que ângulo cada parte deve assumir em função do tempo para que seja possível sair do lugar. Enumerando rapidamente, observa-se que necessita-se saber, para cada intervalo de tempo, o ângulo do pé, tornozelo, joelho, quadril, coluna, ombros, cotovelo, pulsos, pescoço, ao longo do eixo x, y e z, totalizando em 48 incógnitas que se influenciam. É óbvio então que trata-se de um sistema complexo, sem soluções triviais, que por sua vez é estudado há vários anos.
 
-Uma das abordagens analíticas mais comuns de se resolver o sistema é considerando o centro de massa do ser bípede que se deseja fazer andar. Neste modelo, o centro de massa deve permanecer sempre próximo do seu estado original, variando apenas, claro, ao longo do eixo em que se deseja caminhar através. De maneira simplificada, essa forma de tratar o problema se assemelha ao problema de controlar um pêndulo invertido acoplado a um objeto móvel perpenticular a sua trajetória.
+Uma das abordagens analíticas mais comuns de se resolver o sistema é considerando o centro de massa do ser bípede que se deseja fazer andar. Neste modelo, o centro de massa deve permanecer sempre próximo do seu estado original, variando apenas, claro, ao longo do eixo em que se deseja caminhar através. De maneira simplificada, essa forma de tratar o problema se assemelha ao problema de controlar um pêndulo invertido acoplado a um objeto móvel perpendicular a sua trajetória.
 
 Ponto de momento zero (ZMP - Zero Moment Point) é um dos métodos utilizados para resolver o problema considerando o centro de massa. Ele consiste, basicamente, em encontrar o ponto em que o movimento gera momento horizontal zero no centro de massa, ou seja, um equilíbrio, uma estabilidade dinâmica, visto que caminhar uma órbita periódica com uma fase estável alternada com um instável.
 
-Não importa qual for a abordagem utilizando modelos matemáticos e física, até o momento todas elas tem algo nível de complexidade de resolução e computação, e muitas vezes as soluções tem difícil adaptação para outros robôs. Está é uma das maiores motivações de utilizar técnicas de IA, pois nós, seres humanos, não precisamos de todos estes conhecimentos, obviamente, para conseguir andar. Pode-se dizer que nós aprendemos a caminhar por conta de nossa evolução, por aprendizado por reforço quando pequenos, e com nossas redes neurais, então vamos explorar as abordagens de IA relacionadas a isso individualmente buscando simplificar este processo de ter de descobrir e resolver inúmeras equações complexas.
+Não importa qual for a abordagem utilizando modelos matemáticos e física, até o momento todas elas tem algum nível de complexidade de resolução e computação, e muitas vezes as soluções tem difícil adaptação para outros robôs. Esta é uma das maiores motivações de utilizar técnicas de IA, pois nós, seres humanos, não precisamos de todos estes conhecimentos, obviamente, para conseguir andar. Pode-se dizer que nós aprendemos a caminhar por conta de nossa evolução, por aprendizado por reforço quando pequenos, e com nossas redes neurais, então vamos explorar as abordagens de IA relacionadas a isso individualmente buscando simplificar este processo de ter de descobrir e resolver inúmeras equações complexas.
 
 \section{Aprendizagem Supervisionada} \label{aprendizagem_supervisionada}
 
-Uma das técnicas clássicas da IA, especialmente a parte da IA voltada a \textsl{Machine learning}, é a técnica de aprendizagem supervisionada. Nela, dado um conjunto de entradas e as respectivas saídas esperadas, busca-se inferir a função que gerou esses dados para, dado uma entrada desconhecida, poder ter uma estimativa do valor de saida.
+Uma das técnicas clássicas da IA, especialmente a parte da IA voltada a \textsl{Machine Learning}, é a técnica de aprendizagem supervisionada. Nela, dado um conjunto de entradas e as respectivas saídas esperadas, busca-se inferir a função que gerou esses dados para, dado uma entrada desconhecida, poder ter uma estimativa do valor de saida.
 
 Existem diversos métodos para aprendizagem supervisionada, como por exemplo: árvores de decisões, árvores de regressões, florestas aleatórias, métodos de regressão, redes neurais, etc... Entre todos esses métodos, decidimos aplicar ao problema o método de redes neurais. O fato desse método buscar simular o funcionamento do cérebro e também por ser um bom mecanismo para aproximar funções não-lineares foram os principais motivos que nos levaram a o escolher.
 
-Fizemos uma análise detalhada para tentar entender melhor quais os dados de entrada relevantes para usarmos no treinamento de nossa rede neural. Como o movimento do robô é dependente do movimento de suas juntas e, além disso, o movimento das juntas é absoluto, ou seja, quando enviamos o comando de movimento passamos um ângulo absoluto e não um ângulo relativo à posição atual, descobrimos que o movimento inteiro do robô e, consequentemente, o movimento de andar é totalmente determinado pela mudança de posição das juntas. Sendo assim, foi natural escolhermos a posição das juntas como dado de entrada e consequentemente de treinamento da nossa solução, obtendo como saída a proxima posição das juntas. Restava, obviamente, obté-los.
+Fizemos uma análise detalhada para tentar entender melhor quais os dados de entrada relevantes para usarmos no treinamento de nossa rede neural. Como o movimento do robô é dependente do movimento de suas juntas e, além disso, o movimento das juntas é absoluto, ou seja, quando enviamos o comando de movimento passamos um ângulo absoluto e não um ângulo relativo à posição atual, descobrimos que o movimento inteiro do robô e, consequentemente, o movimento de andar é totalmente determinado pela mudança de posição das juntas. Sendo assim, foi natural escolhermos a posição das juntas como dado de entrada e consequentemente de treinamento da nossa solução, obtendo como saída a proxima posição das juntas. Restava, obviamente, obtê-los.
 
 \subsection{Obtenção do conjunto de treinamento}
 
 Decidimos então usar o \textsl{framework} disponibilizado pelo fabricante para isso. O \textsl{framework}, chamado \textsl{NAOqi}\cite{naoqi} possui diversos métodos de alto-nível para obter diversos tipos de dados, como a leitura de sensores e de juntas, além de implementar diversos tipos de movimento, incluindo um algoritmo para caminhada. Há, porém, um pequeno inconveniente nessa história: o framework, nativamente, não integra com o VREP. Para simular um robô virtual, o fabricante disponibiliza seu próprio simulador, chamado \textsl{Choreography}.
 
-Com as ferramentas instaladas, conseguimos fazer um \textsl{script} que enviava o comando de andar (\textsl{moveToward}) e em seguida fazia leitura das posições das juntas, salvando esses dados num arquivo texto, cujo formato possui 27 campos: o primeiro é o número da movimentação atual e os outros 26 campos as posições de cada uma das juntas. Vale a pena destacar uma dificuldade que tivemos e que para superá-la fizemos alguns testes até obter algo empírico: a diferença de tempo entre as leituras das posições das juntas. O movimento do robô, apesar de ser discreto, aparente ser contínuo, ou seja, não sabemos exatamente qual o período entre os comandos que o SDK envia para o robô. Uma leitura com um intervalo curto poluiria os casos de testes, enxendo-o de inconsistências, pois iriamos ler duas vezes a mesma posição. Por outro lado, um intervalo muito entre as leituras também resultaria em problemas, poderiamos perder movimentações úteis, inclusive algumas que servem para estabilizar a posição do robô. Após diversos testes, usando os dados obtidos no simulador VREP, chegamos à conclusão que o intervalo de tempo adequado seria de 100ms.
+Com as ferramentas instaladas, conseguimos fazer um \textsl{script} que enviava o comando de andar (\textsl{moveToward}) e em seguida fazia leitura das posições das juntas, salvando esses dados num arquivo texto, cujo formato possui 27 campos: o primeiro é o número da movimentação atual e os outros 26 campos as posições de cada uma das juntas. Vale a pena destacar uma dificuldade que tivemos e que para superá-la fizemos alguns testes até obter algo empírico: a diferença de tempo entre as leituras das posições das juntas. O movimento do robô, apesar de ser discreto, aparente ser contínuo, ou seja, não sabemos exatamente qual o período entre os comandos que o SDK envia para o robô. Uma leitura com um intervalo curto poluiria os casos de testes, enchendo-o de inconsistências, pois iriamos ler duas vezes a mesma posição. Por outro lado, um intervalo muito grande entre as leituras também resultaria em problemas: poderíamos perder movimentações úteis, inclusive algumas que servem para estabilizar a posição do robô. Após diversos testes, usando os dados obtidos no simulador VREP, chegamos à conclusão que o intervalo de tempo adequado seria de 100ms.
 
 \subsection{Treinamento da Rede Neural}
 
@@ -112,12 +112,12 @@ Para análisar a viabilidade da solução, decidimos testar usando um conjunto b
 
 
  \begin{table}[h]
- \caption{Dados redes neurais com 27 entradas (indice do movimento + 26 posições de juntas) para \textsl{dataset} completo (2999 entradas)}
+ \caption{Dados redes neurais com 27 entradas (índice do movimento + 26 posições de juntas) para \textsl{dataset} completo (2999 entradas)}
  \label{redes_neurais_tabela_1}
  \begin{center}
  \begin{tabular}{|c|c|c|c|}
  \hline
- Hidden Layers & Épocas & Tx de Aprendizado & Erro Quadrático (rmse) \\
+ Camadas Escondidas & Épocas & Tx de Aprendizado & Erro Quadrático (rmse) \\
  \hline
  1 & 10 & 0.01 & 0.0633488217974 \\
  1 & 30 & 0.01 & 0.0631906312484 \\
@@ -142,7 +142,7 @@ Para análisar a viabilidade da solução, decidimos testar usando um conjunto b
  \end{center}
  \end{table}
 
- O resultado, conforme pode ser visto na tabela, foi bem aquém do esperado. A taxa de erro quadrática foi alta e não havia sinal de que ia convergir sem muito tempo de treinamento.
+O resultado, conforme pode ser visto na tabela, foi bem aquém do esperado. A taxa de erro quadrática foi alta e não havia sinal de que ia convergir sem muito tempo de treinamento.
 
 Decidimos simplificar a entrada: em vez de incluirmos o número do movimento, usaríamos somente a posição das juntas como entrada. Nossa idéia inicial ao incluir o número do movimento era ajudar o robô a ter um parâmetro a mais para decidir e, além disso, o movimento de andar é um movimento ciclíco, então imaginamos que a rede seria capaz de observar um padrão interessante dessa entrada. Porém, como os dados da tabela \ref{redes_neurais_tabela_2} mostram, nos equivocamos nisso: essa entrada não só não ajudou em nada, como prejudicou a convergência da rede neural.
 
@@ -152,7 +152,7 @@ Decidimos simplificar a entrada: em vez de incluirmos o número do movimento, us
  \begin{center}
  \begin{tabular}{|c|c|c|c|}
  \hline
- Hidden Layers & Épocas & Tx de Aprendizado & Erro Quadrático (rmse) \\
+ Camadas Escondidas & Épocas & Tx de Aprendizado & Erro Quadrático (rmse) \\
  \hline
  1 & 10 & 0.01 & 0.0636479207235 \\
  1 & 30 & 0.01 & 0.0614250925212 \\
@@ -177,7 +177,7 @@ Decidimos simplificar a entrada: em vez de incluirmos o número do movimento, us
  \end{center}
  \end{table}
 
-Com esses dados em mão, decidimos dar uma boa quantidade de épocas para o treinamento, treinar com um segundo \textsl{dataset} menor  - com 500 entradas - e fixar a rede neural em 3  camadas escondidas para o \textsl{dataset} menor e em 10 para o \textsl{dataset} maior. Por último, fixamos a taxa de aprendizado em $0.3$ para ambos os \textsl{datasets}. Conforme os dados mostram \ref{redes_neurais_tabela_3}, obtivemos melhores resultados de convergência.
+Com esses dados em mão, decidimos dar uma boa quantidade de épocas para o treinamento, treinar com um segundo \textsl{dataset} menor - com 500 entradas - e fixar a rede neural em 3  camadas escondidas para o \textsl{dataset} menor e em 10 para o \textsl{dataset} maior. Por último, fixamos a taxa de aprendizado em $0.3$ para ambos os \textsl{datasets}. Conforme os dados mostram \ref{redes_neurais_tabela_3}, obtivemos melhores resultados de convergência.
 
  \begin{table}[h]
 \caption{Redes Neurais ótimas obtidas por treinamento longo}
@@ -185,7 +185,7 @@ Com esses dados em mão, decidimos dar uma boa quantidade de épocas para o trei
  \begin{center}
  \begin{tabular}{|c|c|c|c|c|}
  \hline
- $I$ & \# Dataset & Hidden Layers & Épocas & Erro Quadrático (rmse) \\
+ $I$ & \# Dataset & Camadas Escondidas & Épocas & Erro Quadrático (rmse) \\
  \hline
  1 & 500  & 3 & 600 & 0.0272638446791 \\
  2 & 2999 & 10 & 600 & 0.00887537932562 \\
@@ -194,13 +194,13 @@ Com esses dados em mão, decidimos dar uma boa quantidade de épocas para o trei
  \end{center}
  \end{table}
 
-Com todas essas reudes neurais treinadas e prontas para serem usadas, decidimos testar as mais promissoras delas, que no caso, foram as que foram treinadas por mais tempo, apresentadas na \ref{redes_neurais_tabela_3}, além de darmos uma chance para a melhor das redes neurais da tabela \ref{redes_neurais_tabela_1}. Por comodidade, também vamos eventualmente nos referir às redes da tabela \ref{redes_neurais_tabela_3} pelo número da coluna $I$.
+Com todas essas redes neurais treinadas e prontas para serem usadas, decidimos testar as mais promissoras delas, que no caso, foram as treinadas por mais tempo, apresentadas na \ref{redes_neurais_tabela_3}, além de darmos uma chance para a melhor das redes neurais da tabela \ref{redes_neurais_tabela_1}. Por comodidade, também vamos eventualmente nos referir às redes da tabela \ref{redes_neurais_tabela_3} pelo número da coluna $I$.
 
 \subsection{Aplicando as Redes Neurais no Robô}
 
-Para aplicar a rede neural no robô fizemos uma função que lê a posição de todas as juntas no VREP e na ordem que usamos de treinamento. Essa função é utilizada num \textsl{loop} que lê a posição das juntas, usá-as como entrada da rede, obtém a saída e envia o comando de para as juntas irem nas posições de saida.
+Para aplicar a rede neural no robô fizemos uma função que lê a posição de todas as juntas no VREP e na ordem que usamos de treinamento. Essa função é utilizada num \textsl{loop} que lê a posição das juntas, usam-na como entrada da rede, obtém a saída e envia o comando para as juntas irem nas posições de saida.
 
-Como era de se esperar olhando a convergência da rede, quando aplicamos a melhor rede neural  da tabela \ref{redes_neurais_tabela_1} obtivemos um resultado ruim, o robô simplemente desequilibrou.
+Como era de se esperar olhando a convergência da rede, quando aplicamos a melhor rede neural da tabela \ref{redes_neurais_tabela_1} obtivemos um resultado ruim, o robô simplemente desequilibrou.
 
 Tentamos então utilizar a rede neural treinada por 600 épocas com o \textsl{dataset} de $2999$. O resultado também não foi bom. O robô tentava dar o primeiro passo e sair da posição inicial, porém se desequilibrava e caía. Há, contudo, uma observação interessante a ser feita: mesmo no chão o robô movia as pernas num movimento semelhante a andar, como é possível ver na sequência de imagens \ref{fig:walk_rna_1}.
 
@@ -212,7 +212,7 @@ Tentamos então utilizar a rede neural treinada por 600 épocas com o \textsl{da
 \end{figure}
 
 
-Por último, testamos a rede neural treinada com $500$ exemplos de movimentação. Essa rede neural foi a mais promissora até o momento: o robô conseguiu sair da posição inicial, ficar em equilibrío e chegar perto de dar os primeiros passos. Porém após alguns movimentos o robô simplesmente ficava parado numa posição similar ao momento de impulso para o proximo passo, conforme mostram a figura \ref{fig:walk_rna_2}.
+Por último, testamos a rede neural treinada com $500$ exemplos de movimentação. Essa rede neural foi a mais promissora até o momento: o robô conseguiu sair da posição inicial, ficar em equilibrío e chegar perto de dar os primeiros passos. Porém, após alguns movimentos o robô simplesmente ficava parado numa posição similar ao momento de impulso para o próximo passo, conforme mostram a figura \ref{fig:walk_rna_2}.
 
 \begin{figure}[H]
  \centering
@@ -221,7 +221,7 @@ Por último, testamos a rede neural treinada com $500$ exemplos de movimentaçã
  \label{fig:walk_rna_2}
 \end{figure}
 
-Ao obsevarmos os comportamentos decidimos testar uma abordagem mista, ou seja, fazer os primeiros movimentos do robô com a rede neural treinada com menos exemplos e depois continuar os movimentos usando a segunda rede neural testada. O resultado disso foi que, finalmente, conseguimos replicar, ainda que de forma não tão precisa, os movimentos de andar que a biblioteca do NAOqi implementa. Esses movimentos podem ser vistos na figura \ref{fig:walk_rna_3}.
+Ao observarmos os comportamentos decidimos testar uma abordagem mista, ou seja, fazer os primeiros movimentos do robô com a rede neural treinada com menos exemplos e depois continuar os movimentos usando a segunda rede neural testada. O resultado disso foi que, finalmente, conseguimos replicar, ainda que de forma não tão precisa, os movimentos de andar que a biblioteca do NAOqi implementa. Esses movimentos podem ser vistos na figura \ref{fig:walk_rna_3}.
 
 \begin{figure}[H]
  \centering
@@ -232,32 +232,32 @@ Ao obsevarmos os comportamentos decidimos testar uma abordagem mista, ou seja, f
 
 \subsection{Interpretação dos Testes e dos Resultados Obtidos}
 
-Nossos testes reforçaram a dificuldade esmiúçadas na seção \ref{dificuldades}. Para a abordagem de aprendizado supervisionado, a maior dificuldade foi o robô fazer os movimentos de andar mantendo o equilíbrio. O fato de uma rede neural ter a capacidade de aprender funções complexas, incluindo as não-lineares - como é o caso -  fez com que essa solução funcionasse.
+Nossos testes reforçaram as dificuldades esmiúçadas na seção \ref{dificuldades}. Para a abordagem de aprendizado supervisionado, a maior dificuldade foi o robô fazer os movimentos de andar mantendo o equilíbrio. O fato de uma rede neural ter a capacidade de aprender funções complexas, incluindo as não-lineares - como é o caso -  fez com que essa solução funcionasse.
 
-Contudo, foi uma surpresa para nós as condições para as quais isso funcionou ou, equivalentemente, o comportamento que observamos quando combinamos as duas melhores redes neurais. Essa supresa se deve principalmente em relação ao comportamento que observamos quando testamos as redes isoladamente. Ficamos instigados a descobrir o motivo disso. Infelizmente, uma das características de redes neurais quando comparadas com outros método, como a árvore de decisão, é que é muito dificil prever totalmente o estado que a rede ficará, sendo assim só conseguimos pensar em suposições.
+Contudo, foi uma surpresa para nós as condições para as quais isso funcionou ou, equivalentemente, o comportamento que observamos quando combinamos as duas melhores redes neurais. Essa supresa se deve principalmente em relação ao comportamento que observamos quando testamos as redes isoladamente. Ficamos instigados a descobrir o motivo disso. Infelizmente, uma das características de redes neurais quando comparadas com outros métodos, como a árvore de decisão, é que é muito dificil prever totalmente o estado em que a rede ficará, sendo assim só conseguimos pensar em suposições.
 
-Virou consenso entre nós que o principal motivo desse comportamento se deve a caractéristica ciclica do movimento de andar. Há um certo compasso que se repete a cada passo e, na nossa, visão foi esse compasso que a rede neural aprendeu, porém, devido à quantidade de exemplos dados para o movimento de andar no caso do \textsl{dataset} maior, ela aprendeu esse padrão às custas de desaprender o movimento de sair da posição inicial e buscar estabilidade antes de dar o primeiro passo. Quando treinamos uma rede neural similar com um \textsl{dataset} menor, essa segunda rede aprendeu a sequencia de movimentos para andar de forma incompleta, contudo isso possibilitou que o movimento inicial para ganhar estabilidade e se preparar para andar fosse aprendido e não sobreescrito pelo padrão de movimento usado para caminhar.
+Virou consenso entre nós que o principal motivo desse comportamento se deve à característica cíclica do movimento de andar. Há um certo compasso que se repete a cada passo e, na nossa visão foi esse compasso que a rede neural aprendeu. Porém, devido à quantidade de exemplos dados para o movimento de andar, no caso do \textsl{dataset} maior, ela aprendeu esse padrão às custas de desaprender o movimento de sair da posição inicial e buscar estabilidade antes de dar o primeiro passo. Quando treinamos uma rede neural similar com um \textsl{dataset} menor, essa segunda rede aprendeu a sequência de movimentos para andar de forma incompleta, contudo isso possibilitou que o movimento inicial para ganhar estabilidade e se preparar para andar fosse aprendido e não sobreescrito pelo padrão de movimento usado para caminhar.
 
 Tentamos melhorar o resultado treinando a rede neural 2 com um \textsl{dataset} menor, com somente os movimentos iniciais. Fizemos isso por 100 épocas, porém não conseguimos melhorar o erro da rede. Esse resultado mostra que a rede está bem encaixada para o problema, sendo díficil mexer nos seus pesos sem prejudicar o valor do erro. Para trabalhos futuros sugerimos um estudo mais a fundo da possibilidade de retreinar a rede com esse dataset limitado, provavelmente adicionando um distúrbio nela ou um mecanismo de \textsl{weight decay}\cite{hastie01statisticallearning}. Pode-se melhorar também os resultados conseguindo extrair um dataset com dados melhores para treinar a rede.
 
 
 \section{Algoritmos Genéticos} \label{algoritmos_geneticos}
 
-Dada a proximidade que os algoritmos genéticos buscam ter com a natureza, e que os seres humanos são frutos de inúmeras evoluções de populações distintas de animais, parece intuitivo avançar no problema de andar utilizando esta técnica da inteligência artificial. Nela buscamos encontrar, depois de várias gerações, um robô capaz de andar, sem cair, indeterminadamente, aprendendo por evolução qual a maneira adequada de mover cada uma de suas articulações em função do tmepo, mantendo uma boa postura e velocidade.
+Dada a proximidade que os algoritmos genéticos buscam ter com a natureza, e que os seres humanos são frutos de inúmeras evoluções de populações distintas de animais, parece intuitivo avançar no problema de andar utilizando esta técnica da Inteligência Artificial. Nela buscamos encontrar, depois de várias gerações, um robô capaz de andar, sem cair, indeterminadamente, aprendendo por evolução qual a maneira adequada de mover cada uma de suas articulações em função do tempo, mantendo uma boa postura e velocidade.
 
-Nosso primeiro passo encontrar um \textsl{framework} em \textsl{python} bom para esta tarefa, em termos de facilidade de código e velocidade de execução. Então resolvemos utilizar o \textsl{DEAP}\cite{deap}, que é bastante flexível, aceitando uma variedade de funções de mutação, estartégias de evolução, subida da encosta, funções fitness. Então, elaboramos um simples exemplo deste \textsl{framework} para nosso problema, para atestar que o conceito que queremos mostrar é algo factível.
+Nosso primeiro passo foi encontrar um \textsl{framework} em \textsl{python} bom para esta tarefa, em termos de facilidade de código e velocidade de execução. Então resolvemos utilizar o \textsl{DEAP}\cite{deap}, que é bastante flexível, aceitando uma variedade de funções de mutação, estratégias de evolução, subida da encosta, entre outros. Então, elaboramos um simples exemplo deste \textsl{framework} para nosso problema, para atestar que o conceito que queremos mostrar é algo factível.
 
-Começamos com uma população pequena, para vericar rapidamente a evolução, sabendo ainda não alcançar valores ótimos. Definimos a taxa de mutação baixa e de \textsl{crossover} alta conforme visto em sala de aula, e verificado no trabalho individual. A mutação inicial seria apenas regerar o(s) alelo(s) sorteado(s) do cromossomo (indivíduo).
+Começamos com uma população pequena, para verificar rapidamente a evolução, sabendo ainda não alcançar valores ótimos. Definimos a taxa de mutação baixa e de \textsl{crossover} alta conforme visto em sala de aula e verificado no trabalho individual. A mutação inicial seria apenas regerar o(s) alelo(s) sorteado(s) do cromossomo (indivíduo).
 
-Novamente, queremos otimizar a função de rotação das juntas do NAO, então definimos o cromossomo em função disso. Ou seja, cada indivíduo da população é um vetor com $(2N+2)J$ posições, onde $J$ é o número de juntas em que queremos otimizar suas rotações em função do tempo (no caso 26), o número $(2N+2)$ representa o número de constantes estipuladas em cada função de rotação em função do tempo, e $N$ o número de termos da função, finalmente definida por $f(t) = \frac{a_0}{2}+\sum_{i=0}^N a_{2i+2} cos(a_{1} t) + a_{2i+3} sen(a_{1} t)$, onde $a_i$ é a i-nésima constante do indivíduo. Tal função é uma série de Fourier truncada, boa para representar funções perióticas quaisqueres e fazer, portanto, cada articulação poder ser utilizada de forma independente em perídos e rítmos diferentes.
+Novamente, queremos otimizar a função de rotação das juntas do NAO, então definimos o cromossomo em função disso. Ou seja, cada indivíduo da população é um vetor com $(2N+2)J$ posições, onde $J$ é o número de juntas em que queremos otimizar suas rotações em função do tempo (no caso 26), o número $(2N+2)$ representa o número de constantes estipuladas em cada função de rotação em função do tempo, e $N$ o número de termos da função, finalmente definida por $f(t) = \frac{a_0}{2}+\sum_{i=1}^N a_{2i} cos(a_{1} i t) + a_{2i+1} sen(a_{1} i t)$, onde $a_i$ é a i-ésima constante da junta representada no cromossomo. Tal função é uma série de Fourier truncada, boa para representar funções periódicas quaisquer e fazer, portanto, cada articulação poder ser utilizada de forma independente em períodos diferentes.
 
-Para validar o modelo, escolhemos uma função fitness inicial bem simples: $f(i)=\Delta x$, onde $f$ é a função fitness, $i$ um indivíduo, $\Delta x$ a distância percorrida ao longo do eixo $x$ até acabarmos a simulação, algo em torno de 3 segundos. Ou seja, para cada indivíduo, fazemos uma simulaçao no \textsl{VREP}, e, após 3 segundos, retornamos a evolução do robô no eixo $x$.
+Para validar o modelo, escolhemos uma função fitness inicial bem simples: $f(i)=\Delta x$, onde $f$ é a função fitness, $i$ um indivíduo, $\Delta x$ a distância percorrida ao longo do eixo $x$ até acabarmos a simulação, algo em torno de 3 segundos. Ou seja, para cada indivíduo, fazemos uma simulação no \textsl{VREP}, e, após 3 segundos, retornamos a evolução do robô no eixo $x$.
 
-Obviamente, mesmo depois de inúmeras gerações, o robô não aprendeu a andar, pois a função fitness escolhida está simples demais. Porém ele aprendeu que cair para frente é algo mais vantajoso do que para qualquer outra direção, atestando que nossa estratégia de implementação até o momento estava correta. Com isso, sabíamos que poderíamos sofisticar mais a função fitness e de mutação, e ampliar o número de termos na série de Fourier truncada, de forma que, se desse errado, o problema seria em nossa formulação estar incompleta.
+Obviamente, mesmo depois de inúmeras gerações, o robô não aprendeu a andar, pois a função fitness escolhida está simples demais. Porém, ele aprendeu que cair para frente é algo mais vantajoso do que para qualquer outra direção, atestando que nossa estratégia de implementação até o momento estava correta. Com isso, sabíamos que poderíamos sofisticar mais a função fitness e de mutação, e ampliar o número de termos na série de Fourier truncada, de forma que, se desse errado, o problema seria em nossa formulação estar incompleta.
 
-Definimos que cada série de Fourier truncada teria 5 termos $seno$ e 5 $cosseno$, resultando em 12 constantes por junta, implicando em o tamanho do cromossomo ser 312 ($(2N + 2) . J = (2 . 5 + 2) . 26 = 312$). Melhoramos a função fitness, colocando alguns cálculos a mais que indicam se está ocorrendo uma caminhada algo melhor do que simplesmente cair. A ideia é reforçar movimentos cujo resultado seja o robô estar andando com cabeça erguida, penalizando quedas ou ir, de alguma forma, para trás. Com esta função fitness melhorada, os resultados também foram melhores, mas ainda sim estavam longes de serem os desejados. O robô aprendeu a cair "lentamente" e para frente, o que, segundo a função fitness, dá um resultado melhor do que ficar parado, ou caior para os lados, e no chão caído até chegou a esboçar movimentos de dobrar as pernas.
+Definimos que cada série de Fourier truncada teria $N = 5$ , resultando em 12 constantes por junta, implicando em o tamanho do cromossomo ser 312 ($(2N + 2) . J = (2 . 5 + 2) . 26 = 312$). Melhoramos a função fitness, colocando alguns cálculos a mais que indicam se está ocorrendo uma caminhada, algo melhor do que simplesmente cair. A ideia é reforçar movimentos cujo resultado seja o robô estar andando com cabeça erguida, penalizando quedas ou ir, de alguma forma, para trás. Com esta função fitness melhorada, os resultados também foram melhores, mas ainda sim estavam longes de serem os desejados. O robô aprendeu a cair "lentamente" e para frente, o que, segundo a função fitness, dá um resultado melhor do que ficar parado, ou cair para os lados, e no chão caído até chegou a esboçar movimentos de dobrar as pernas.
 
-Com algumas gerações a mais, ele conseguiu dar um passo e cair, ou coisas semelhantes. Porém paralelamente a esta função fitness, fizemos outro teste, com uma abordagem mais simples, permitindo o NAO fazer até dois movimentos. Neste cenário, ele conseguiu andar não de maneira ótima, pois o movimento que a evolução gerou foi: mover uma perna perna para frente, e depois para trás, resultando em ele sair do lugar, sem cair, por tempo indeterminado (Figura \ref{fig:walk_ga}).
+Com algumas gerações a mais, ele conseguiu dar um passo e cair, ou coisas semelhantes. Porém paralelamente a esta função fitness, fizemos outro teste, com uma abordagem mais simples, permitindo o NAO fazer apenas dois movimentos. Neste cenário, ele conseguiu andar não de maneira ótima, pois o movimento que a evolução gerou foi: mover uma perna para frente, e depois para trás, resultando em ele sair do lugar, sem cair, por tempo indeterminado (Figura \ref{fig:walk_ga}).
 
 \begin{figure}[H]
  \centering
@@ -282,7 +282,7 @@ Importante ressaltar que antes de cada execução de simulação do robô para o
  \label{fig:figNaoStart}
 \end{figure}
 
-Como não obtivemos pleno sucesso com esta abordagem, e percebemos que, de certa forma, o que queríamos que o AG descobrisse era as funções de rotação as quais sabíamos suas respectivas imagens conforme já descrito anteriormente (pois utilizamos tais valores para treinar a rede neural), então realizamos testes com AG sem o simulador para tentar aproximar com séries de Fourier tais funções. Todas as configurações foram as mesmas, exceto a função fitness, que agora é definda por $f(i)=\sum_{t=0}^{T}|S(i, t)-F_t|$, onde $S$ é a série de Fourier truncada, $T$ o tempo máximo da amostra, $F_t$ o t-ésimo valor da amostra.  Novamente não obtivemos sucesso, então desenhamos em um gráfico os valores desejados da função de rotação em função do tempo e a série de Fourier com constantes ajustados por AG (Figuras \ref{fig:ga_approximation_01} e \ref{fig:ga_approximation_02}) para entender os motivos das falhas. Notamos que as funções desejadas são muito "sensíveis", pois oscilam bastante em função do tempo, e com valores pequenos, sendo difícil acertar tais valores exatamente, pois rapidamente encontra-se uma função "próxima". O problema então se encontra no fato de se houver uma leve diferença entre o desejado e o encontrado, o robô irá cair.
+Como não obtivemos pleno sucesso com esta abordagem, e percebemos que, de certa forma, o que queríamos que o AG descobrisse era as funções de rotação as quais já sabíamos conforme já descrito anteriormente (pois utilizamos tais valores para treinar a rede neural), então realizamos testes com AG sem o simulador para tentar aproximar com séries de Fourier tais funções. Todas as configurações foram as mesmas, exceto a função fitness, que agora é definda por $f(i)=\sum_{t=0}^{T}|S(i, t)-F_t|$, onde $S$ é a série de Fourier truncada, $T$ o tempo máximo da amostra, $F_t$ o t-ésimo valor da amostra.  Novamente não obtivemos sucesso, então desenhamos em um gráfico os valores desejados da função de rotação em função do tempo e a série de Fourier com constantes ajustados por AG (Figuras \ref{fig:ga_approximation_01} e \ref{fig:ga_approximation_02}) para entender os motivos das falhas. Notamos que as funções desejadas são muito "sensíveis", pois oscilam bastante em função do tempo, e com valores pequenos, sendo difícil acertar tais valores exatamente. O problema, então, se encontra no fato de que se houver uma leve diferença entre o valor desejado e o encontrado, o robô irá cair.
 
 \begin{figure}[H]
  \centering
@@ -294,11 +294,11 @@ Como não obtivemos pleno sucesso com esta abordagem, e percebemos que, de certa
 \begin{figure}[H]
  \centering
  \includegraphics[scale=0.33]{figuras/{ga_approximation_02}.png}
- \caption{Tentativa de encontrar função de rotação de uma outra artigulação com algoritmos de genéticos. Em verde aproximação, em azul o esperado, após 50 gerações}
+ \caption{Tentativa de encontrar função de rotação de uma outra articulação com algoritmos genéticos. Em verde aproximação e em azul o esperado, após 50 gerações}
  \label{fig:ga_approximation_02}
 \end{figure}
 
-Por outro lado, utilizando método dos mínimos quadrados para aproximar a função de rotações com um polinômio de alto grau se mostrou bem eficaz, conforme mostra as Figuras \ref{fig:poly_approximation_01} e \ref{fig:poly_approximation_02}, onde o erro é praticamente nulo. Então, testamos utilzar tais funções aproximadas para fazer o robô andar, e obtivemos bons resultados, ele finalmente andou, porém vagarosamente (Figura \ref{fig:poly_walk}).
+Por outro lado, utilizando método dos mínimos quadrados para aproximar a função de rotações com um polinômio de alto grau se mostrou bem eficaz, conforme mostra as Figuras \ref{fig:poly_approximation_01} e \ref{fig:poly_approximation_02}, onde o erro é praticamente nulo. Então, testamos utilizar tais funções aproximadas para fazer o robô andar, e obtivemos bons resultados, ele finalmente andou, porém vagarosamente (Figura \ref{fig:poly_walk}).
 
 \begin{figure}[H]
  \centering
@@ -321,13 +321,13 @@ Por outro lado, utilizando método dos mínimos quadrados para aproximar a funç
  \label{fig:poly_walk}
 \end{figure}
 
-Trabalhos futuros utilizando AG devem fazer uso de métodos mais precisos do que os aqui presentes, ou tentar outras abordagens de algoritmos genéticos, como PSO (Particle Swarm Optimization) ou BRKGA (Biased random-key Genetic Algorithms), ou fazer uso de métodos analíticos juntos com AG, ou representando os indivíduos de forma diferente.
+Trabalhos futuros utilizando AG devem fazer uso de métodos mais precisos do que os aqui presentes, ou tentar outras abordagens de algoritmos genéticos, como PSO (Particle Swarm Optimization) ou BRKGA (Biased random-key Genetic Algorithms), ou, ainda, fazer uso de métodos analíticos juntos com AG, ou representando os indivíduos de forma diferente.
 
 \section{Conclusões} \label{conclusoes}
 
-Após realizar as duas abordagens, notamos em todas elas a necessidade de colocar o robô em uma posição inicial propícia para caminhar, e então executar as respectivas técnicas. Isso é algo aceitável, pois com o robô físico, pode-se colocá-lo nesta posição facilmente (joelhos e cotovelhos levemente flexionados, coluna levemente inclinada, braços para baixo), e no simulador, conseguimos deixá-lo assim com apenas 7 comandos de rotações nas devidas articulações. O ponto de partida foi fundamental para a abordagem de RNA, e ajudou bastante a de AG descobrir as devidas constantes da série de fourier truncada para cada junta mais rapidamente (apesar de mesmo assim não encontrar as ótimas).
+Após realizar as duas abordagens, notamos, em todas elas, a necessidade de colocar o robô em uma posição inicial propícia para caminhar, e então executar as respectivas técnicas. Isso é algo aceitável, pois com o robô físico, pode-se colocá-lo nesta posição facilmente (joelhos e cotovelhos levemente flexionados, coluna levemente inclinada, braços para baixo), e no simulador, conseguimos deixá-lo assim com apenas 7 comandos de rotações nas devidas articulações. O ponto de partida foi fundamental para a abordagem de RNA, e ajudou bastante a de AG descobrir as devidas constantes da Série de Fourier Truncada para cada junta mais rapidamente (apesar de mesmo assim não encontrar as ótimas).
 
-Conclui-se que o problema de fazer um robô bípede é realmente complexo como esperávamos, e simular a natureza com estas técnias pode ser sim eficiente. Em trabalhos futuros deve-se combinar tais técnicas, para verificar se obtem-se dados melhores. Utilizar outros tipos de redes neurais, como osciladores neurais e outras técnicas \cite{cpgs} mostrou ter bons resultados, e podem ser incorporados a abordagem deste trabalho. Algo a também ser explorado é o uso de aprendizado por reforço em substituição ou adição ao aprendizado supervisionado, utilizando mais de uma rede neural treinada em momentos diferentes.
+Conclui-se que o problema de fazer um robô bípede é realmente complexo como esperávamos, e simular a natureza com estas técnicas pode ser sim eficiente. Em trabalhos futuros deve-se combinar tais técnicas, para verificar se obtém-se dados melhores. Utilizar outros tipos de redes neurais, como osciladores neurais e outras técnicas \cite{cpgs} mostrou ter bons resultados, e podem ser incorporados na abordagem deste trabalho. Algo a também ser explorado é o uso de aprendizado por reforço em substituição ou adição ao aprendizado supervisionado, utilizando mais de uma rede neural treinada em momentos diferentes.
 
 %******************************************************************************
 % Referências - Definidas no arquivo Relatorio.bib
