@@ -36,7 +36,7 @@
 
 \urlstyle{tt}
 % Indicar o nome do autor e o curso/nível (grad-mestrado-doutorado-especial)
-\title{Técnicas de Inteligência Artificial para fazer robo NAO aprender a andar}
+\title{Técnicas de Inteligência Artificial para fazer robô NAO aprender a andar}
 \author{%
  \IEEEauthorblockN{Jucélio Fonseca\IEEEauthorrefmark{1}, Lucas Padilha\IEEEauthorrefmark{1}, Luciano Sabença\IEEEauthorrefmark{1}, Tomás Silva Queiroga\IEEEauthorrefmark{1}}
  \IEEEauthorblockA{\IEEEauthorrefmark{1}%
@@ -50,7 +50,7 @@
 %%*****************************************************************************
 % Resumo do trabalho
 \begin{abstract}
-O objetivo deste trabalho é mostrar diferentes abordagens de inteligência articial (IA) para fazer um robo bípede (NAO) andar utilizando o simulador VREP. Fez-se uso de redes neurais artificiais (RNA) e algortimo genéticos. Estudaremos os prós e contras de cada técnica, e exibr dos resultados obtidos, além de expor possíveis trabalhos futuros.
+O objetivo deste trabalho é mostrar diferentes abordagens de inteligência articial (IA) para fazer um robô bípede (NAO) andar utilizando o simulador VREP. Fez-se uso de redes neurais artificiais (RNA) e algortimo genéticos. Estudaremos os prós e contras de cada técnica, e exibr dos resultados obtidos, além de expor possíveis trabalhos futuros.
 \end{abstract}
 
 % Indique três palavras-chave que descrevem o trabalho
@@ -240,7 +240,14 @@ Obviamente, mesmo depois de inúmeras gerações, o robô não aprendeu a andar,
 
 Definimos que cada série de Fourier truncada teria 5 termos $seno$ e 5 $cosseno$, resultando em 12 constantes por junta, implicando em o tamanho do cromossomo ser 312 ($(2N + 2) . J = (2 . 5 + 2) . 26 = 312$). Melhoramos a função fitness, colocando alguns cálculos a mais que indicam se está ocorrendo uma caminhada algo melhor do que simplesmente cair. A ideia é reforçar movimentos cujo resultado seja o robô estar andando com cabeça erguida, penalizando quedas ou ir, de alguma forma, para trás. Com esta função fitness melhorada, os resultados também foram melhores, mas ainda sim estavam longes de serem os desejados. O robô aprendeu a cair "lentamente" e para frente, o que, segundo a função fitness, dá um resultado melhor do que ficar parado, ou caior para os lados, e no chão caído até chegou a esboçar movimentos de dobrar as pernas.
 
-Com algumas gerações a mais, ele conseguiu dar um passo e cair, ou coisas semelhantes. Porém paralelamente a esta função fitness, fizemos outro teste, com uma abordagem mais simples, permitindo o NAO fazer até dois movimentos. Neste cenário, ele conseguiu andar não de maneira ótima, pois o movimento que a evolução gerou foi: mover uma perna perna para frente, e depois para trás, resultando em ele sair do lugar, sem cair, por tempo indeterminado.
+Com algumas gerações a mais, ele conseguiu dar um passo e cair, ou coisas semelhantes. Porém paralelamente a esta função fitness, fizemos outro teste, com uma abordagem mais simples, permitindo o NAO fazer até dois movimentos. Neste cenário, ele conseguiu andar não de maneira ótima, pois o movimento que a evolução gerou foi: mover uma perna perna para frente, e depois para trás, resultando em ele sair do lugar, sem cair, por tempo indeterminado (Figura \ref{fig:walk_ga}).
+
+\begin{figure}[H]
+ \centering
+ \includegraphics[scale=0.45]{figuras/{Galeria-ga_04.mp4-1}.jpg}
+ \caption{Robô andando utilizando dois movimentos aprendidos com algoritmos genéticos.}
+ \label{fig:walk_ga}
+\end{figure}
 
 Importante ressaltar que antes de cada execução de simulação do robô para obter o fator fitness do indivíduo, deixávamos o NAO pronto para caminhar, executando 7 comandos de rotação para cada uma de suas articulações, resultando em ele flexionar levemente os joelhos e cotovelos, abaixar os braços e o tronco (Figura \ref{fig:figNaoPreparado}). Isso foi feito pois esta posição é mais estável, e aceita mais movimentos do que a inicial padrão do simulador, onde seus joelhos, cotovelos estão estendidos ao máximo (Figura \ref{fig:figNaoStart}).
 
@@ -274,7 +281,7 @@ Como não obtivemos pleno sucesso com esta abordagem, e percebemos que, de certa
  \label{fig:ga_approximation_02}
 \end{figure}
 
-Por outro lado, utilizando método dos mínimos quadrados para aproximar a função de rotações com um polinômio de alto grau se mostrou bem eficaz, conforme mostra as Figuras \ref{fig:poly_approximation_01} e \ref{fig:poly_approximation_02}, onde o erro é praticamente nulo. Então, testamos utilzar tais funções aproximadas para fazer o robo andar, e obtivemos bons resultados, ele finalmente andou, porém vagarosamente (Figura \ref{fig:poly_walk}).
+Por outro lado, utilizando método dos mínimos quadrados para aproximar a função de rotações com um polinômio de alto grau se mostrou bem eficaz, conforme mostra as Figuras \ref{fig:poly_approximation_01} e \ref{fig:poly_approximation_02}, onde o erro é praticamente nulo. Então, testamos utilzar tais funções aproximadas para fazer o robô andar, e obtivemos bons resultados, ele finalmente andou, porém vagarosamente (Figura \ref{fig:poly_walk}).
 
 \begin{figure}[H]
  \centering
