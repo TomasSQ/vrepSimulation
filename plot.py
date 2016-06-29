@@ -7,7 +7,7 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 
-N_COEF = 100
+N_COEF = 5
 NGEN = 10
 POPULATION_SIZE = 100
 CXPB = 0.9
@@ -112,7 +112,7 @@ def aproximate(function):
     toolbox = initGA(function)
     return evolve(toolbox)
 
-f = file('../training_data2.txt')
+f = file('training_data2.txt')
 
 functions = []
 
@@ -133,17 +133,18 @@ for function in functions[2:]:
     x = np.arange(0, len(function) * INTERVAL, INTERVAL)
     plt.plot(x, function)
 
-    #coeficients = aproximate(function)
-    #print coeficients
-    #aproximation = []
-    #for t in xrange(len(function)):
-    #    aproximation += [truncated_Fourier(coeficients, t * INTERVAL)]
-
-    #plt.plot(x, np.array(aproximation) / 4)
-    p = np.poly1d(np.polyfit(x, function, 150))
+    print "Aproximation"
+    coeficients = aproximate(function)
+    print coeficients
     aproximation = []
     for t in xrange(len(function)):
-        aproximation += [p(t * INTERVAL)]
-    plt.plot(x, aproximation)
+        aproximation += [truncated_Fourier(coeficients, t * INTERVAL)]
+
+    plt.plot(x, np.array(aproximation) / 4)
+    #p = np.poly1d(np.polyfit(x, function, 150))
+    #aproximation = []
+    #for t in xrange(len(function)):
+    #    aproximation += [p(t * INTERVAL)]
+    #plt.plot(x, aproximation)
 
     plt.show()

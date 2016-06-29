@@ -258,7 +258,23 @@ Importante ressaltar que antes de cada execução de simulação do robô para o
  \label{fig:figNaoStart}
 \end{figure}
 
-Como não obtivemos pleno sucesso com esta abordagem, e percebemos que, de certa forma, o que queríamos que o AG descobrisse era as funções de rotação as quais sabíamos suas respectivas imagens conforme já descrito anteriormente (pois utilizamos tais valores para treinar a rede neural), fizemos testes com AG sem o simulador para tentar aproximar com séries de Fourier
+Como não obtivemos pleno sucesso com esta abordagem, e percebemos que, de certa forma, o que queríamos que o AG descobrisse era as funções de rotação as quais sabíamos suas respectivas imagens conforme já descrito anteriormente (pois utilizamos tais valores para treinar a rede neural), fizemos testes com AG sem o simulador para tentar aproximar com séries de Fourier. Novamente não obtivemos sucesso, então desenhamos em um gráfico os valores desejados da função de rotação em função do tempo e a série de Fourier com constantes ajustados por AG (Figuras \ref{fig:ga_approximation_01} e \ref{fig:ga_approximation_02}) para entender os motivos das falhas. Notamos que as funções desejadas são muito "sensíveis", pois oscilam bastante em função do tempo, e com valores pequenos, sendo difícil acertar tais valores exatamente, pois rapidamente encontra-se uma função "próxima". O problema então se encontra no fato de se houver uma leve diferença entre o desejado e o encontrado, o robô irá cair.
+
+\begin{figure}[H]
+ \centering
+ \includegraphics[scale=0.33]{figuras/{ga_approximation_01}.png}
+ \caption{Tentativa de encontrar função de rotação de uma artigulação com algoritmos de genéticos. Em verde aproximação, em azul o esperado, após 50 gerações}
+ \label{fig:ga_approximation_02}
+\end{figure}
+
+\begin{figure}[H]
+ \centering
+ \includegraphics[scale=0.33]{figuras/{ga_approximation_02}.png}
+ \caption{Tentativa de encontrar função de rotação de uma outra artigulação com algoritmos de genéticos. Em verde aproximação, em azul o esperado, após 50 gerações}
+ \label{fig:ga_approximation_02}
+\end{figure}
+
+Trabalhos futuros utilizando AG devem fazer uso de métodos mais precisos do que os aqui presentes, ou tentar outras abordagens de algoritmos genéticos, como PSO (Particle Swarm Optimization) ou BRKGA (Biased random-key Genetic Algorithms), ou fazer uso de métodos analíticos juntos com AG, ou representando os indivíduos de forma diferente.
 
 \section{Conclusões} \label{conclusoes}
 
